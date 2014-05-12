@@ -58,7 +58,7 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 
 		if ( 0 < $post->ID ) {
 			// get an array of lessons in the module if there is one		
-			if( has_term( '', $sensei_modules->taxonomy, $post->ID ) ) {
+			if( isset( $sensei_modules ) && has_term( '', $sensei_modules->taxonomy, $post->ID ) ) {
 				$lesson_module = $sensei_modules->get_lesson_module( $post->ID );
 				$in_module = true;
 				$module_title = htmlspecialchars( $lesson_module->name );
@@ -96,7 +96,6 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 		echo $before_widget; ?>
 
 		<header>
-
 			<h2 class="course-title"><a href="<?php echo $course_url; ?>"><?php echo $course_title; ?></a></h2>
 
 			<?php if ( $in_module ) { ?>
