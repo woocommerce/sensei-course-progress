@@ -27,7 +27,7 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 		$this->woo_widget_cssclass = 'widget_sensei_course_progress';
 		$this->woo_widget_description = __( 'Displays the current learners progress within the current course/module (only displays on single lesson page).', 'sensei-course-progress' );
 		$this->woo_widget_idbase = 'sensei_course_progress';
-		$this->woo_widget_title = __( 'Sensei Course Progress', 'sensei-course-progress' );
+		$this->woo_widget_title = __( 'Sensei - Course Progress', 'sensei-course-progress' );
 		/* Widget settings. */
 		$widget_ops = array( 'classname' => $this->woo_widget_cssclass, 'description' => $this->woo_widget_description );
 
