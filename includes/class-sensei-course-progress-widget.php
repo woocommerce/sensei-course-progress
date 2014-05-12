@@ -42,13 +42,18 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 		
 		global $woothemes_sensei, $post, $current_user, $view_lesson, $user_taking_course, $sensei_modules;
 
-		// If not viewing a lesson or current user is not taking the course, don't display the widget
-		if( !is_singular('lesson') || !( is_user_logged_in() && $user_taking_course ) ) return;
+		// get the course for the current lesson/quiz
+		$lesson_course_id = get_post_meta( $post->ID, '_lesson_course', true );
+
+		// Check if the user is taking the course
+		$is_user_taking_course = WooThemes_Sensei_Utils::sensei_check_for_activity( array( 'post_id' => $lesson_course_id, 'user_id' => $current_user->ID, 'type' => 'sensei_course_start' ) );
+
+		// If not viewing a lesson/quiz or current user is not taking the course, don't display the widget
+		if( !( ( is_singular('lesson') || is_singular('quiz') ) && ( isset( $is_user_taking_course ) && false != $is_user_taking_course ) ) ) return;
 
 		extract( $args );
 
-		// get the course for the current lesson
-		$lesson_course_id = get_post_meta( $post->ID, '_lesson_course', true );
+		$quiz_lesson = absint( get_post_meta( $post->ID, '_quiz_lesson', true ) );
 		$course_title = htmlspecialchars( get_the_title( $lesson_course_id ) );
 		$course_url = get_the_permalink($lesson_course_id);
 
@@ -107,18 +112,34 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 		<ul class="course-progress-lessons">
 
 			<?php foreach( $lesson_array as $lesson ) { 
+				$lesson_id = $lesson->ID;
 				$lesson_title = htmlspecialchars( $lesson->post_title );
-				$lesson_url = get_the_permalink( $lesson->ID );
+				$lesson_url = get_the_permalink( $lesson_id );
+
+				// add 'completed' class to completed lessons
 				$classes = "not-completed";
 				if( WooThemes_Sensei_Utils::user_completed_lesson( $lesson->ID, $current_user->ID ) ) {
 					$classes = "completed";
 				}
-				if( $lesson->ID == $post->ID ) {
+
+				// Lesson Quiz Meta
+				$lesson_quizzes = $woothemes_sensei->frontend->lesson->lesson_quizzes( $lesson_id );
+
+			    $lesson_quiz_id = 0;
+
+			    if ( 0 < count($lesson_quizzes) )  {
+			        foreach ($lesson_quizzes as $quiz_item){
+			            $lesson_quiz_id = $quiz_item->ID;
+			        } // End For Loop
+			    } // End If Statement
+
+			    // add 'current' class on the current lesson/quiz
+				if( $lesson_id == $post->ID || $lesson_quiz_id == $post->ID ) {
 					$classes .= " current";
 				} ?>
 
 				<li class="course-progress-lesson <?php echo $classes; ?>">
-					<?php if( $lesson->ID == $post->ID ) {
+					<?php if( $lesson->ID == $post->ID || $lesson_quiz_id == $post->ID ) {
 						echo '<span>' . $lesson_title . '</span>';
 					} else {
 						echo '<a href="' . $lesson_url . '">' . $lesson_title . '</a>';
