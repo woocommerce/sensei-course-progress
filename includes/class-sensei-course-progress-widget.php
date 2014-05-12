@@ -127,13 +127,13 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 
 			    $lesson_quiz_id = 0;
 
-			    if ( 0 < count($lesson_quizzes) )  {
-			        foreach ($lesson_quizzes as $quiz_item){
-			            $lesson_quiz_id = $quiz_item->ID;
-			        } // End For Loop
-			    } // End If Statement
+				if ( 0 < count( $lesson_quizzes ) )  {
+					foreach ( $lesson_quizzes as $quiz_item ) {
+						$lesson_quiz_id = $quiz_item->ID;
+					} // End For Loop
+				} // End If Statement
 
-			    // add 'current' class on the current lesson/quiz
+				// add 'current' class on the current lesson/quiz
 				if( $lesson_id == $post->ID || $lesson_quiz_id == $post->ID ) {
 					$classes .= " current";
 				} ?>
