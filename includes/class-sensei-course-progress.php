@@ -104,6 +104,7 @@ class Sensei_Course_Progress {
 	 */
 	public function include_widgets() {
 		include_once( 'class-sensei-course-progress-widget.php' );
+		register_widget( 'Sensei_Course_Progress_Widget' );
 	}
 
 	/**

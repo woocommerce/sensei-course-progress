@@ -133,5 +133,3 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 		<?php echo $after_widget;
 	}
 }
-
-register_widget( 'Sensei_Course_Progress_Widget' );
