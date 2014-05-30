@@ -51,8 +51,8 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 		//Check for preview lesson
 		$is_preview = WooThemes_Sensei_Utils::is_preview_lesson( $post->ID );
 
-		// If not viewing a lesson/quiz or current user is not taking the course, don't display the widget
-		if( !( ( is_singular('lesson') || is_singular('quiz') ) && ( isset( $is_user_taking_course ) && false != $is_user_taking_course ) || $is_preview ) ) return;
+		// If not viewing a lesson/quiz, don't display the widget
+		if( !( ( is_singular('lesson') || is_singular('quiz') ) ) ) return;
 
 		extract( $args );
 
