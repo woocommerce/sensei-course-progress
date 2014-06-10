@@ -93,7 +93,8 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 							'terms' => $lesson_module
 						)
 					),
-					'orderby' => 'menu_order',
+					'meta_key' => '_order_module_' . intval( $lesson_module->term_id ),
+					'orderby' => 'meta_value_num date',
 					'order' => 'ASC'
 				);
 
