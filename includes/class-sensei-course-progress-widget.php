@@ -39,7 +39,7 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 	}
 
 	function widget( $args, $instance ) {
-		
+
 		global $woothemes_sensei, $post, $current_user, $view_lesson, $user_taking_course, $sensei_modules;
 
 		// get the course for the current lesson/quiz
@@ -60,7 +60,7 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 		extract( $args );
 
 		$quiz_lesson = absint( get_post_meta( $post->ID, '_quiz_lesson', true ) );
-		$course_title = htmlspecialchars( get_the_title( $lesson_course_id ) );
+		$course_title = get_the_title( $lesson_course_id );
 		$course_url = get_the_permalink($lesson_course_id);
 
 		$in_module = false;
@@ -68,7 +68,7 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 		$lesson_array = array();
 
 		if ( 0 < $post->ID ) {
-			// get an array of lessons in the module if there is one		
+			// get an array of lessons in the module if there is one
 			if( isset( $sensei_modules ) && has_term( '', $sensei_modules->taxonomy, $post->ID ) ) {
 				$lesson_module = $sensei_modules->get_lesson_module( $post->ID );
 				$in_module = true;
@@ -100,7 +100,7 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 
 				$lesson_array = get_posts( $args );
 			} else {
-				// if there's no module, get all lessons in the course	
+				// if there's no module, get all lessons in the course
 				$lesson_array = $woothemes_sensei->frontend->course->course_lessons( $lesson_course_id );
 			}
 		}
@@ -118,7 +118,7 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 
 		<ul class="course-progress-lessons">
 
-			<?php foreach( $lesson_array as $lesson ) { 
+			<?php foreach( $lesson_array as $lesson ) {
 				$lesson_id = $lesson->ID;
 				$lesson_title = htmlspecialchars( $lesson->post_title );
 				$lesson_url = get_the_permalink( $lesson_id );
@@ -152,7 +152,7 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 						echo '<a href="' . $lesson_url . '">' . $lesson_title . '</a>';
 					} ?>
 				</li>
-			
+
 			<?php } ?>
 
 		</ul>
