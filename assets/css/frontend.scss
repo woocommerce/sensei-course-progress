@@ -79,3 +79,47 @@
 		}
 	}
 }
+
+.course-progress-navigation {
+	background: #eee;
+	border-top: 1px solid #ddd;
+	li {
+		width: 50%;
+		text-align: center;
+		a {
+			background: #fefefe;
+			display: block;
+			padding: 0;
+			color: #ccc;
+			span {
+				display: none;
+			}
+			&:hover {
+				background: #fff;
+				text-decoration: none !important;
+			}
+			&:before, &:after {
+				font-family: FontAwesome;
+				font-weight: bold;
+				font-size: 2em;
+			}
+		}
+		&.prev {
+			float: left;
+			a {
+				border-right: 1px solid #ddd;
+				&:before {
+					content: "\f053";
+				}
+			}
+		}
+		&.next {
+			float: right;
+			a {
+				&:after {
+					content: "\f054";
+				}
+			}
+		}
+	}
+}
