@@ -1,5 +1,8 @@
 *** Sensei Course Progress Changelog ***
 
+2014.08.18 - version 1.0.2
+* Fix - Fixes a styling issue on the next/previous lesson buttons in some themes.
+
 2014.06.30 - version 1.0.1
 * Fix - Fixes HTML character conversion in course title.
 * New - Added next/previous lesson navigation above the lesson list.
