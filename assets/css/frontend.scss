@@ -23,6 +23,18 @@
 		#sidebar & {
 			margin: 0;
 		}
+		.course-progress-module {
+			border: none;
+			border-bottom: 1px solid rgba(0,0,0,0.05);
+			margin: 0;
+			padding: 0.618em 1.618em 0.618em 3.618em;
+			background: rgba(255,255,255,0.6);
+			h3 {
+				margin: 0;
+				border: none;
+				padding: 0;
+			}
+		}
 		.course-progress-lesson {
 			border: none;
 			margin: 0;
