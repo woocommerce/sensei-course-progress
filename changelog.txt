@@ -2,6 +2,8 @@
 
 2014.09.02 - version 1.0.3
 * New - Adds an option to display lessons from all modules, not just the current one.
+* Tweak - Left aligns the module title
+* Tweak - Updating code for Sensei 1.7 compatibility
 
 2014.08.18 - version 1.0.2
 * Fix - Fixes a styling issue on the next/previous lesson buttons in some themes.
