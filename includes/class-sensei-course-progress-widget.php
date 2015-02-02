@@ -42,6 +42,10 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 
 		global $woothemes_sensei, $post, $current_user, $view_lesson, $user_taking_course, $sensei_modules;
 
+		if ( isset( $instance['allmodules'] ) ) {
+			$allmodules = $instance['allmodules'];
+		}
+
 		// get the course for the current lesson/quiz
 		$lesson_course_id = get_post_meta( $post->ID, '_lesson_course', true );
 
@@ -72,35 +76,68 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 		if ( 0 < $current_lesson_id ) {
 			// get an array of lessons in the module if there is one
 			if( isset( $sensei_modules ) && has_term( '', $sensei_modules->taxonomy, $current_lesson_id ) ) {
+				// Get all modules
+    			$course_modules = $sensei_modules->get_course_modules( $lesson_course_id );
 				$lesson_module = $sensei_modules->get_lesson_module( $current_lesson_id );
 				$in_module = true;
-				$module_title = htmlspecialchars( $lesson_module->name );
+				$current_module_title = htmlspecialchars( $lesson_module->name );
 
-		    	// get all lessons in the current module
-				$args = array(
-					'post_type' => 'lesson',
-					'post_status' => 'publish',
-					'posts_per_page' => -1,
-					'meta_query' => array(
-						array(
-							'key' => '_lesson_course',
-							'value' => intval( $lesson_course_id ),
-							'compare' => '='
-						)
-					),
-					'tax_query' => array(
-						array(
-							'taxonomy' => $sensei_modules->taxonomy,
-							'field' => 'id',
-							'terms' => $lesson_module
-						)
-					),
-					'meta_key' => '_order_module_' . intval( $lesson_module->term_id ),
-					'orderby' => 'meta_value_num date',
-					'order' => 'ASC'
-				);
+				// Display all modules
+				if ( 'on' == $allmodules ) {
+					foreach ($course_modules as $module) {
+						// get all lessons in the module
+						$args = array(
+							'post_type' => 'lesson',
+							'post_status' => 'publish',
+							'posts_per_page' => -1,
+							'meta_query' => array(
+								array(
+									'key' => '_lesson_course',
+									'value' => intval( $lesson_course_id ),
+									'compare' => '='
+								)
+							),
+							'tax_query' => array(
+								array(
+									'taxonomy' => $sensei_modules->taxonomy,
+									'field' => 'id',
+									'terms' => $module
+								)
+							),
+							'meta_key' => '_order_module_' . intval( $module->term_id ),
+							'orderby' => 'meta_value_num date',
+							'order' => 'ASC'
+						);
+						$lesson_array = array_merge( $lesson_array, get_posts( $args) );
+					}
+				} else {
+					// Only display current module
+			    	// get all lessons in the current module
+					$args = array(
+						'post_type' => 'lesson',
+						'post_status' => 'publish',
+						'posts_per_page' => -1,
+						'meta_query' => array(
+							array(
+								'key' => '_lesson_course',
+								'value' => intval( $lesson_course_id ),
+								'compare' => '='
+							)
+						),
+						'tax_query' => array(
+							array(
+								'taxonomy' => $sensei_modules->taxonomy,
+								'field' => 'id',
+								'terms' => $lesson_module
+							)
+						),
+						'meta_key' => '_order_module_' . intval( $lesson_module->term_id ),
+						'orderby' => 'meta_value_num date',
+						'order' => 'ASC'
+					);
 
-				$lesson_array = get_posts( $args );
+					$lesson_array = get_posts( $args );
+				}
 			} else {
 				// if there's no module, get all lessons in the course
 				$lesson_array = $woothemes_sensei->frontend->course->course_lessons( $lesson_course_id );
@@ -112,8 +149,8 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 		<header>
 			<h2 class="course-title"><a href="<?php echo $course_url; ?>"><?php echo $course_title; ?></a></h2>
 
-			<?php if ( $in_module ) { ?>
-				<h3 class="module-title"><?php echo $module_title ; ?></h3>
+			<?php if ( $in_module && 'on' != $allmodules ) { ?>
+				<h3 class="module-title"><?php echo $current_module_title ; ?></h3>
 			<?php } ?>
 
 		</header>
@@ -134,7 +171,11 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 
 		<ul class="course-progress-lessons">
 
-			<?php foreach( $lesson_array as $lesson ) {
+			<?php
+
+			$old_module = '';
+
+			foreach( $lesson_array as $lesson ) {
 				$lesson_id = $lesson->ID;
 				$lesson_title = htmlspecialchars( $lesson->post_title );
 				$lesson_url = get_the_permalink( $lesson_id );
@@ -151,7 +192,19 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 				// add 'current' class on the current lesson/quiz
 				if( $lesson_id == $post->ID || $lesson_quiz_id == $post->ID ) {
 					$classes .= " current";
-				} ?>
+				}
+
+				if ( isset( $sensei_modules) && 'on' == $allmodules ) {
+					$new_module = $sensei_modules->get_lesson_module( $lesson_id );
+					if ( $old_module != $new_module ) {
+						?>
+						<li class="course-progress-module"><h3><?php echo $new_module->name; ?></h3></li>
+						<?php
+						$old_module = $new_module;
+					}
+				}
+
+				?>
 
 				<li class="course-progress-lesson <?php echo $classes; ?>">
 					<?php if( $lesson->ID == $post->ID || $lesson_quiz_id == $post->ID ) {
@@ -167,4 +220,49 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 
 		<?php echo $after_widget;
 	}
+
+	/**
+	 * Method to update the settings from the form() method.
+	 * @since  1.0.0
+	 * @param  array $new_instance New settings.
+	 * @param  array $old_instance Previous settings.
+	 * @return array               Updated settings.
+	 */
+	public function update ( $new_instance, $old_instance ) {
+		$instance = $old_instance;
+
+		/* The check box is returning a boolean value. */
+		$instance['allmodules'] = $new_instance['allmodules'];
+
+		return $instance;
+	} // End update()
+
+	/**
+	 * The form on the widget control in the widget administration area.
+	 * Make use of the get_field_id() and get_field_name() function when creating your form elements. This handles the confusing stuff.
+	 * @since  1.1.0
+	 * @param  array $instance The settings for this instance.
+	 * @return void
+	 */
+    public function form( $instance ) {
+
+		/* Set up some default widget settings. */
+		/* Make sure all keys are added here, even with empty string values. */
+		global $sensei_modules;
+		$defaults = array(
+						'allmodules' => false
+					);
+
+		$instance = wp_parse_args( (array) $instance, $defaults );
+
+		if ( isset( $sensei_modules ) ) {
+		?>
+				<p>
+					<input type="checkbox" class="checkbox" id="<?php echo esc_attr( $this->get_field_id('allmodules') ); ?>" name="<?php echo esc_attr( $this->get_field_name('allmodules') ); ?>"<?php checked( $instance['allmodules'], 'on' ); ?> />
+					<label for="<?php echo esc_attr( $this->get_field_id('allmodules') ); ?>"><?php _e( 'Display all Modules', 'woothemes-sensei' ); ?></label><br />
+				</p>
+		<?php } else { ?>
+				<p>There are no options for this widget.</p>
+				<?php }
+	} // End form()
 }
