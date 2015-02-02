@@ -50,7 +50,7 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 		$lesson_course_id = get_post_meta( $post->ID, '_lesson_course', true );
 
 		// Check if the user is taking the course
-		$is_user_taking_course = WooThemes_Sensei_Utils::sensei_check_for_activity( array( 'post_id' => $lesson_course_id, 'user_id' => $current_user->ID, 'type' => 'sensei_course_start' ) );
+		$is_user_taking_course = WooThemes_Sensei_Utils::user_started_course( $lesson_course_id, $current_user->ID );
 
 		//Check for preview lesson
 		$is_preview = false;
@@ -67,7 +67,7 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 		} else $current_lesson_id = $post->ID;
 
 		$course_title = get_the_title( $lesson_course_id );
-		$course_url = get_the_permalink($lesson_course_id);
+		$course_url = get_the_permalink( $lesson_course_id );
 
 		$in_module = false;
 		$lesson_module = '';
@@ -187,15 +187,7 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 				}
 
 				// Lesson Quiz Meta
-				$lesson_quizzes = $woothemes_sensei->frontend->lesson->lesson_quizzes( $lesson_id );
-
-			    $lesson_quiz_id = 0;
-
-				if ( 0 < count( $lesson_quizzes ) )  {
-					foreach ( $lesson_quizzes as $quiz_item ) {
-						$lesson_quiz_id = $quiz_item->ID;
-					} // End For Loop
-				} // End If Statement
+				$lesson_quiz_id = $woothemes_sensei->frontend->lesson->lesson_quizzes( $lesson_id );
 
 				// add 'current' class on the current lesson/quiz
 				if( $lesson_id == $post->ID || $lesson_quiz_id == $post->ID ) {
