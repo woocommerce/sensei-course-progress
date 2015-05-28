@@ -42,6 +42,7 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 
 		global $woothemes_sensei, $post, $current_user, $view_lesson, $user_taking_course;
 
+        $allmodules = 'off';
 		if ( isset( $instance['allmodules'] ) ) {
 			$allmodules = $instance['allmodules'];
 		}
@@ -75,10 +76,10 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 
 		if ( 0 < $current_lesson_id ) {
 			// get an array of lessons in the module if there is one
-			if( isset( $sensei_modules ) && has_term( '', $sensei_modules->taxonomy, $current_lesson_id ) ) {
+			if( isset( Sensei()->modules ) && has_term( '', Sensei()->modules->taxonomy, $current_lesson_id ) ) {
 				// Get all modules
-    			$course_modules = $sensei_modules->get_course_modules( $lesson_course_id );
-				$lesson_module = $sensei_modules->get_lesson_module( $current_lesson_id );
+    			$course_modules = Sensei()->modules->get_course_modules( $lesson_course_id );
+				$lesson_module = Sensei()->modules->get_lesson_module( $current_lesson_id );
 				$in_module = true;
 				$current_module_title = htmlspecialchars( $lesson_module->name );
 
@@ -99,7 +100,7 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 							),
 							'tax_query' => array(
 								array(
-									'taxonomy' => $sensei_modules->taxonomy,
+									'taxonomy' => Sensei()->modules->taxonomy,
 									'field' => 'id',
 									'terms' => $module
 								)
@@ -126,7 +127,7 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 						),
 						'tax_query' => array(
 							array(
-								'taxonomy' => $sensei_modules->taxonomy,
+								'taxonomy' => Sensei()->modules->taxonomy,
 								'field' => 'id',
 								'terms' => $lesson_module
 							)
