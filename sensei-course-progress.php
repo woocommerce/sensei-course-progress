@@ -1,13 +1,13 @@
 <?php
 /*
  * Plugin Name: Sensei Course Progress
- * Version: 1.0.3
+ * Version: 1.0.4
  * Plugin URI: http://www.woothemes.com/
  * Description: Sensei extension that displays the learner's progress in the current course/module in a widget on lesson pages.
  * Author: WooThemes
  * Author URI: http://www.woothemes.com/
  * Requires at least: 3.8
- * Tested up to: 4.1
+ * Tested up to: 4.2
  *
  * @package WordPress
  * @author WooThemes
@@ -55,7 +55,7 @@ if( is_sensei_active() ) {
 	 * @return object Sensei_Course_Progress
 	 */
 	function Sensei_Course_Progress() {
-		return Sensei_Course_Progress::instance( __FILE__, '1.0.3' );
+		return Sensei_Course_Progress::instance( __FILE__, '1.0.4' );
 	}
 
 	Sensei_Course_Progress();
