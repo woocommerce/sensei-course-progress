@@ -1,5 +1,9 @@
 *** Sensei Course Progress Changelog ***
 
+2015.05.28 - version 1.0.4
+* Tweak - Updating code to work with modules in Sensei 1.8
+* Fix - Fixed a few undefined variable notices
+
 2015.02.02 - version 1.0.3
 * New - Adds an option to display lessons from all modules, not just the current one.
 * Tweak - Updating code for Sensei 1.7 compatibility
