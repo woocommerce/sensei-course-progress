@@ -102,7 +102,7 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 								array(
 									'taxonomy' => Sensei()->modules->taxonomy,
 									'field' => 'id',
-									'terms' => $module
+									'terms' => intval( $module->term_id )
 								)
 							),
 							'meta_key' => '_order_module_' . intval( $module->term_id ),
