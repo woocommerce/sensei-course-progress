@@ -249,14 +249,13 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 
 		/* Set up some default widget settings. */
 		/* Make sure all keys are added here, even with empty string values. */
-		global $sensei_modules;
 		$defaults = array(
 						'allmodules' => false
 					);
 
 		$instance = wp_parse_args( (array) $instance, $defaults );
 
-		if ( isset( $sensei_modules ) ) {
+		if ( isset( Sensei()->modules ) ) {
 		?>
 				<p>
 					<input type="checkbox" class="checkbox" id="<?php echo esc_attr( $this->get_field_id('allmodules') ); ?>" name="<?php echo esc_attr( $this->get_field_name('allmodules') ); ?>"<?php checked( $instance['allmodules'], 'on' ); ?> />
