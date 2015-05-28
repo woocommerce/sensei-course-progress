@@ -103,7 +103,7 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 				$lesson_array = get_posts( $args );
 			} else {
 				// if there's no module, get all lessons in the course
-				$lesson_array = $woothemes_sensei->frontend->course->course_lessons( $lesson_course_id );
+				$lesson_array = Sensei()->course->course_lessons( $lesson_course_id );
 			}
 		}
 
@@ -146,15 +146,7 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 				}
 
 				// Lesson Quiz Meta
-				$lesson_quizzes = $woothemes_sensei->frontend->lesson->lesson_quizzes( $lesson_id );
-
-			    $lesson_quiz_id = 0;
-
-				if ( 0 < count( $lesson_quizzes ) )  {
-					foreach ( $lesson_quizzes as $quiz_item ) {
-						$lesson_quiz_id = $quiz_item->ID;
-					} // End For Loop
-				} // End If Statement
+                $lesson_quiz_id = Sensei()->lesson->lesson_quizzes( $lesson_id );
 
 				// add 'current' class on the current lesson/quiz
 				if( $lesson_id == $post->ID || $lesson_quiz_id == $post->ID ) {
