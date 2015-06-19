@@ -1,6 +1,6 @@
-.widget_sensei_course_progress {
-	padding: 0 !important;
-	background: rgba(0,0,0,0.02) !important;
+.widget.widget_sensei_course_progress {
+	padding: 0;
+	background: rgba(0,0,0,0.02);
 	border-radius: 5px;
 	header {
 		padding: 1.618em 1.618em 0;
@@ -13,7 +13,7 @@
 		}
 		h3 {
 		  	padding-bottom: 0.618em;
-			margin-bottom: 0.168em !important;
+			margin-bottom: 0.168em;
 			border: none;
 		}
 	}
@@ -71,7 +71,7 @@
 				}
 			}
 			&.current span {
-				background: rgba(0,0,0,0.01);
+				background: rgba(255,255,255,1);
 				color: rgba(0,0,0,0.5);
 				border-top: 1px solid rgba(0,0,0,0.04);
 				&:before {
@@ -107,13 +107,13 @@
 				padding: 1em 0;
 				color: #ccc;
 				line-height: 1.5em;
-				text-decoration: none !important;
+				text-decoration: none;
 				span {
 					display: none;
 				}
 				&:hover {
 					background: #fff;
-					text-decoration: none !important;
+					text-decoration: none;
 				}
 				&:before, &:after {
 					font-family: FontAwesome;
