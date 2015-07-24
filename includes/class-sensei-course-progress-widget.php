@@ -46,9 +46,17 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 		if ( isset( $instance['allmodules'] ) ) {
 			$allmodules = $instance['allmodules'];
 		}
+		
+		// If not viewing a lesson/quiz, don't display the widget
+		if( !( ( is_singular('lesson') || is_singular('quiz') ) ) ) return;
+
+		extract( $args );
+		if ( is_singular('quiz') ) {
+			$current_lesson_id = absint( get_post_meta( $post->ID, '_quiz_lesson', true ) );
+		} else $current_lesson_id = $post->ID;
 
 		// get the course for the current lesson/quiz
-		$lesson_course_id = get_post_meta( $post->ID, '_lesson_course', true );
+		$lesson_course_id = get_post_meta( $current_lesson_id, '_lesson_course', true );
 
 		// Check if the user is taking the course
 		$is_user_taking_course = WooThemes_Sensei_Utils::user_started_course( $lesson_course_id, $current_user->ID );
@@ -58,14 +66,6 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 		if ( method_exists( 'WooThemes_Sensei_Utils', 'is_preview_lesson' ) ) {
 			$is_preview = WooThemes_Sensei_Utils::is_preview_lesson( $post->ID );
 		}
-
-		// If not viewing a lesson/quiz, don't display the widget
-		if( !( ( is_singular('lesson') || is_singular('quiz') ) ) ) return;
-
-		extract( $args );
-		if ( is_singular('quiz') ) {
-			$current_lesson_id = absint( get_post_meta( $post->ID, '_quiz_lesson', true ) );
-		} else $current_lesson_id = $post->ID;
 
 		$course_title = get_the_title( $lesson_course_id );
 		$course_url = get_the_permalink( $lesson_course_id );
