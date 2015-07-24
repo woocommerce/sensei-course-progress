@@ -1,5 +1,9 @@
 *** Sensei Course Progress Changelog ***
 
+2015.07.24 - version 1.0.5
+* Fix - Ensures the widget works properly on quiz pages.
+* Tweak - Removes !important from CSS styles to make it easier to override the styles.
+
 2015.05.28 - version 1.0.4
 * Tweak - Updating code to work with modules in Sensei 1.8
 * Fix - Fixed a few undefined variable notices
