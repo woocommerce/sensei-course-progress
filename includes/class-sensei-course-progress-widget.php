@@ -35,7 +35,7 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 		$control_ops = array( 'width' => 250, 'height' => 350, 'id_base' => $this->woo_widget_idbase );
 
 		/* Create the widget. */
-		$this->WP_Widget( $this->woo_widget_idbase, $this->woo_widget_title, $widget_ops, $control_ops );
+		parent::__construct( $this->woo_widget_idbase, $this->woo_widget_title, $widget_ops, $control_ops );
 	}
 
 	function widget( $args, $instance ) {
