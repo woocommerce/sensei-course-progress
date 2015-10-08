@@ -1,5 +1,9 @@
 *** Sensei Course Progress Changelog ***
 
+2015.10.08 - version 1.0.6
+* Fix - Replaces missing font declaration to ensure arrows always display
+* Fix - Updates widget constructor method due to a change in WordPress
+
 2015.07.24 - version 1.0.5
 * Fix - Ensures the widget works properly on quiz pages.
 * Tweak - Removes !important from CSS styles to make it easier to override the styles.
