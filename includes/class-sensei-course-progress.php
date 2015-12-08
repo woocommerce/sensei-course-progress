@@ -81,7 +81,7 @@ class Sensei_Course_Progress {
 		$this->file = $file;
 		$this->dir = dirname( $this->file );
 		$this->assets_dir = trailingslashit( $this->dir ) . 'assets';
-		$this->assets_url = esc_url( trailingslashit( plugins_url( '/assets/', $this->file ) ) );
+		$this->assets_url = trailingslashit( plugins_url( '/assets/', $this->file ) );
 
 		$this->script_suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
@@ -114,10 +114,10 @@ class Sensei_Course_Progress {
 	 * @return void
 	 */
 	public function enqueue_styles () {
-		global $woothemes_sensei;
 
 		wp_register_style( $this->_token . '-frontend', esc_url( $this->assets_url ) . 'css/frontend.css', $this->_version );
 		wp_enqueue_style( $this->_token . '-frontend' );
+
 	} // End enqueue_styles()
 
 	/**

@@ -20,7 +20,6 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 	/**
 	 * Constructor function.
 	 * @since  1.1.0
-	 * @return  void
 	 */
 	public function __construct() {
 		/* Widget variable settings. */
@@ -40,7 +39,7 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 
 	function widget( $args, $instance ) {
 
-		global $woothemes_sensei, $post, $current_user, $view_lesson, $user_taking_course;
+		global $post, $current_user, $view_lesson, $user_taking_course;
 
         $allmodules = 'off';
 		if ( isset( $instance['allmodules'] ) ) {
@@ -50,7 +49,9 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 		// If not viewing a lesson/quiz, don't display the widget
 		if( !( ( is_singular('lesson') || is_singular('quiz') ) ) ) return;
 
-		extract( $args );
+        $before_widget = $args[ 'before_widget' ];
+        $after_widget = $args[ 'after_widget' ];
+
 		if ( is_singular('quiz') ) {
 			$current_lesson_id = absint( get_post_meta( $post->ID, '_quiz_lesson', true ) );
 		} else $current_lesson_id = $post->ID;
@@ -74,6 +75,7 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 		$lesson_module = '';
 		$lesson_array = array();
 
+        $current_module_title = '';
 		if ( 0 < $current_lesson_id ) {
 			// get an array of lessons in the module if there is one
 			if( isset( Sensei()->modules ) && has_term( '', Sensei()->modules->taxonomy, $current_lesson_id ) ) {

@@ -1,5 +1,9 @@
 *** Sensei Course Progress Changelog ***
 
+2016.01.14 - version 1.0.7
+- Fix   - Bug where esc_url was called twice
+- Tweak - Code cleanup removing unused variables the usage of extract function
+
 2015.10.08 - version 1.0.6
 * Fix - Replaces missing font declaration to ensure arrows always display
 * Fix - Updates widget constructor method due to a change in WordPress
