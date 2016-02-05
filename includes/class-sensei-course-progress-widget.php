@@ -7,6 +7,7 @@
  * @package 	Sensei/Widgets
  * @version 	1.0.0
  * @extends 	WC_Widget
+ *
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
@@ -42,11 +43,14 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 
 		global $woothemes_sensei, $post, $current_user, $view_lesson, $user_taking_course;
 
-        $allmodules = 'off';
-		if ( isset( $instance['allmodules'] ) ) {
-			$allmodules = $instance['allmodules'];
-		}
-		
+		$defaults = array(
+					'allmodules' => 'off',
+					'length' => 'off',
+					'linktomodules'=> 'off');
+
+		extract(wp_parse_args( (array) $instance, $defaults ));
+
+
 		// If not viewing a lesson/quiz, don't display the widget
 		if( !( ( is_singular('lesson') || is_singular('quiz') ) ) ) return;
 
@@ -83,6 +87,31 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 				$in_module = true;
 				$current_module_title = htmlspecialchars( $lesson_module->name );
 
+				//Check if Navigation Links Should Link to Previous/Next Module instead of Previous/Next Lesson
+				if('on' == $linktomodules) {
+					//Navigation should link to the previous/next module
+					//Get info about the Current Module
+					$ls_curr_module = Sensei()->modules->get_lesson_module( $current_lesson_id );
+					$cur_term = $ls_curr_module->term_id;
+					//Get Links to the first Lesson in the Previous and Next Modules
+					$NavInfo = self::getNextAndPrevLessonLinks($course_modules, $lesson_course_id, $cur_term);
+				} else {
+					//Navigation should link to the previous/next lesson
+					 $nav_id_array = sensei_get_prev_next_lessons( $current_lesson_id );
+					 $previous_lesson_id = absint( $nav_id_array['prev_lesson'] );
+					 $next_lesson_id = absint( $nav_id_array['next_lesson'] );
+					 if($next_lesson_id>0)  {
+						 $NavInfo['next']['url'] = get_permalink( $next_lesson_id );
+						  $NavInfo['next']['title'] = get_the_title($next_lesson_id);
+					 }
+					 if($previous_lesson_id>0) {
+						 $NavInfo['prev']['url'] = get_permalink( $previous_lesson_id );
+						  $NavInfo['prev']['title'] = get_the_title($previous_lesson_id);
+					 }
+
+				}
+
+
 				// Display all modules
 				if ( 'on' == $allmodules ) {
 					foreach ($course_modules as $module) {
@@ -110,6 +139,7 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 							'order' => 'ASC'
 						);
 						$lesson_array = array_merge( $lesson_array, get_posts( $args) );
+
 					}
 				} else {
 					// Only display current module
@@ -160,18 +190,34 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 		$nav_id_array = sensei_get_prev_next_lessons( $current_lesson_id );
 		$previous_lesson_id = absint( $nav_id_array['prev_lesson'] );
 		$next_lesson_id = absint( $nav_id_array['next_lesson'] );
-
-		if ( ( 0 < $previous_lesson_id ) || ( 0 < $next_lesson_id ) ) { ?>
-
-			<ul class="course-progress-navigation">
-				<?php if ( 0 < $previous_lesson_id ) { ?><li class="prev"><a href="<?php echo esc_url( get_permalink( $previous_lesson_id ) ); ?>" title="<?php echo get_the_title( $previous_lesson_id ); ?>"><span><?php _e( 'Previous', 'sensei-course-progress' ); ?></span></a></li><?php } ?>
-				<?php if ( 0 < $next_lesson_id ) { ?><li class="next"><a href="<?php echo esc_url( get_permalink( $next_lesson_id ) ); ?>" title="<?php echo get_the_title( $next_lesson_id ); ?>"><span><?php _e( 'Next', 'sensei-course-progress' ); ?></span></a></li><?php } ?>
-			</ul>
-
-		<?php } ?>
-
+		?>
 		<ul class="course-progress-lessons">
+		<h4 class="course-chpt"><?php echo $current_module_title ; ?></h4>
+			<ul class="course-progress-navigation">
 
+				<?php if ( isset($NavInfo['prev'] )) {
+				//display previous button
+
+				//if there is only a previous button and no next button
+				//add special class to element, so that placement
+				//can be fixed with CSS
+				$custom_class = ($NavInfo['next']==null & isset($NavInfo['prev']) ) ? 'prev_adj' : 'prev';
+
+				?>
+				<li class=" <?php echo $custom_class; 	?>">
+				<a href="<?php echo esc_url($NavInfo['prev']['url']); ?>"
+				 class ="mj_et_button_position et_pb_promo_button et_pb_button
+" title="<?php echo esc_html($NavInfo['prev']['title']); ?>"><span><?php _e( 'Previous', 'sensei-course-progress' );
+?></span></a></li>
+<?php } ?>
+
+
+				<?php if ( isset($NavInfo['next'] )) { ?>
+				<li class="next">
+				<a href="<?php echo esc_url($NavInfo['next']['url']); ?>" class ="mj_et_button_position et_pb_promo_button et_pb_button" title="<?php echo  esc_html($NavInfo['next']['title']); ?>"><span><?php _e( 'Next', 'sensei-course-progress' );
+				?></span></a></li><?php } ?>
+			</ul>
+				<div class="course-list-menu">
 			<?php
 
 			$old_module = '';
@@ -209,18 +255,37 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 
 				<li class="course-progress-lesson <?php echo $classes; ?>">
 					<?php if( $lesson->ID == $post->ID || $lesson_quiz_id == $post->ID ) {
-						echo '<span>' . $lesson_title . '</span>';
+						echo '<span>' . $lesson_title . ' ';
+						if('on'==$length) {
+						//display the length in minutes next to the lesson title
+							$lesson_length = get_post_meta($lesson_id, '_lesson_length', true);
+							$lesson_length = !isset($lesson_length) ? '0' : $lesson_length;
+							if($lesson_length>0)  {
+								$this->print_length($lesson_length);
+							}
+						}
+						echo '</span>';
 					} else {
-						echo '<a href="' . $lesson_url . '">' . $lesson_title . '</a>';
+						echo '<a href="' . $lesson_url . '">' . $lesson_title . '  ';
+						if('on'==$length) {
+						$lesson_length = get_post_meta($lesson_id, '_lesson_length', true);
+							$lesson_length = !isset($lesson_length) ? '0' : $lesson_length;
+							if($lesson_length>0)  {
+								$this->print_length($lesson_length);
+							}
+						}
+						echo '</a>';
 					} ?>
 				</li>
 
 			<?php } ?>
 
-		</ul>
+		</ul></div> <!-- course-list-menu -->
 
 		<?php echo $after_widget;
 	}
+
+
 
 	/**
 	 * Method to update the settings from the form() method.
@@ -234,7 +299,8 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 
 		/* The check box is returning a boolean value. */
 		$instance['allmodules'] = $new_instance['allmodules'];
-
+		$instance['length'] = $new_instance['length'];
+		$instance['linktomodules'] = $new_instance['linktomodules'];
 		return $instance;
 	} // End update()
 
@@ -250,10 +316,21 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 		/* Set up some default widget settings. */
 		/* Make sure all keys are added here, even with empty string values. */
 		$defaults = array(
-						'allmodules' => false
+						'allmodules' => false,
+						'length' => false,
+						'linktomodules'=> false
 					);
 
 		$instance = wp_parse_args( (array) $instance, $defaults );
+		?>
+
+
+		<p>
+		<input type="checkbox" class="checkbox" id="<?php echo esc_attr( $this->get_field_id('length') ); ?>" name="<?php echo esc_attr( $this->get_field_name('length') ); ?>"<?php checked( $instance['length'], 'on' ); ?> />
+		<label for="<?php echo esc_attr( $this->get_field_id('length') ); ?>"><?php _e( 'Display Lesson Length', 'woothemes-sensei' ); ?></label><br />
+		</p>
+
+		<?php
 
 		if ( isset( Sensei()->modules ) ) {
 		?>
@@ -261,8 +338,93 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 					<input type="checkbox" class="checkbox" id="<?php echo esc_attr( $this->get_field_id('allmodules') ); ?>" name="<?php echo esc_attr( $this->get_field_name('allmodules') ); ?>"<?php checked( $instance['allmodules'], 'on' ); ?> />
 					<label for="<?php echo esc_attr( $this->get_field_id('allmodules') ); ?>"><?php _e( 'Display all Modules', 'woothemes-sensei' ); ?></label><br />
 				</p>
-		<?php } else { ?>
-				<p>There are no options for this widget.</p>
-				<?php }
+
+				<p>
+					<input type="checkbox" class="checkbox" id="<?php echo esc_attr( $this->get_field_id('linktomodules') ); ?>" name="<?php echo esc_attr( $this->get_field_name('linktomodules') ); ?>"<?php checked( $instance['linktomodules'], 'on' ); ?> />
+					<label for="<?php echo esc_attr( $this->get_field_id('linktomodules') ); ?>"><?php _e( 'Point Navigation Buttons to Previous/Next Module', 'woothemes-sensei' ); ?></label><br />
+				</p>
+		<?php }
 	} // End form()
+
+
+		/**
+        * Get the URLs of the Next and Previous Modules
+		* @param $course_modules
+		* @param $lesson_course_id
+		* @param $current
+        *
+		* @return array
+		*/
+	private function getNextAndPrevLessonLinks ($course_modules, $lesson_course_id, $current) {
+
+		$first_lesson_in_earch_module = array();
+		foreach ($course_modules as $module) {
+					// get all lessons in the module
+					$args = array(
+						'post_type' => 'lesson',
+						'post_status' => 'publish',
+						'posts_per_page' => -1,
+						'meta_query' => array(
+							array(
+								'key' => '_lesson_course',
+								'value' => intval( $lesson_course_id ),
+								'compare' => '='
+							)
+						),
+						'tax_query' => array(
+							array(
+								'taxonomy' => Sensei()->modules->taxonomy,
+								'field' => 'id',
+								'terms' => intval( $module->term_id )
+							)
+						),
+							'meta_key' => '_order_module_' . intval( $module->term_id ),
+							'orderby' => 'meta_value_num date',
+							'order' => 'ASC'
+						);
+						$lesson_array = get_posts( $args) ;
+						$old_module = '';
+
+				foreach( $lesson_array as $lesson ) {
+					$lesson_id = $lesson->ID;
+					$lesson_title = htmlspecialchars( $lesson->post_title );
+					$lesson_url = get_the_permalink( $lesson_id );
+					$new_module = Sensei()->modules->get_lesson_module( $lesson_id );
+
+					if ( $old_module != $new_module ) {
+						$old_module = $new_module;
+						$first_lesson_in_earch_module[$new_module->term_id] = array('url'=> $lesson_url,
+						'title'=>$new_module->name);
+					}
+				}
+
+			}
+
+			//find the previous/next modules
+			$prev = null;
+			$found = false;
+			$ret = array();
+			foreach ($first_lesson_in_earch_module as $key => $value) {
+				if($found) {
+					$ret['next'] = $value;
+					break;
+				}
+				if($current == $key) {
+					$ret['prev'] = $prev;
+					$found = true;
+				}
+			$prev = $value;
+			}
+			return $ret;
+	}
+
+
+	/**
+	* @param $length
+	*/
+	private function  print_length($length) {
+		echo '<span class="sensei_lesson_length">';
+		printf( esc_html__( ' %d Minutes', 'woothemes-sensei' ), $length );
+		echo '</span>';
+	}
 }
