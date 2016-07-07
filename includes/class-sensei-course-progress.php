@@ -103,8 +103,18 @@ class Sensei_Course_Progress {
 	 * Include widgets
 	 */
 	public function include_widgets() {
-		include_once( 'class-sensei-course-progress-widget.php' );
-		register_widget( 'Sensei_Course_Progress_Widget' );
+
+		// Determine whether to show collapse sidebar or not
+		$settings = Sensei()->settings->get_settings();
+		$collapse_enable = $settings[ 'sensei_progress_collapse'];
+		if ($collapse_enable == true) {
+			include_once( 'class-sensei-course-progress-collapse-widget.php' );
+			register_widget( 'Sensei_Course_Progress_Collapse_Widget' );
+		} else {
+			include_once( 'class-sensei-course-progress-widget.php' );
+			register_widget( 'Sensei_Course_Progress_Widget' );
+		}
+
 	}
 
 	/**
@@ -114,10 +124,24 @@ class Sensei_Course_Progress {
 	 * @return void
 	 */
 	public function enqueue_styles () {
-		global $woothemes_sensei;
 
 		wp_register_style( $this->_token . '-frontend', esc_url( $this->assets_url ) . 'css/frontend.css', $this->_version );
 		wp_enqueue_style( $this->_token . '-frontend' );
+
+		/* Enqueue collapse styles if enabled*/
+		$settings = Sensei()->settings->get_settings();
+		$collapse_enable = $settings[ 'sensei_progress_collapse'];
+		if ($collapse_enable == true) {
+
+			wp_enqueue_style('progress-collapse',  esc_url( $this->assets_url . 'css/sensei-progress-module-collapse.css' ), '1.0.0');
+			wp_register_script('progress-collapse', esc_url( $this->assets_url . 'js/sensei-progress-module-collapse.js' ), array(),
+				'1.0',
+				true);
+			wp_enqueue_script('progress-collapse');
+			wp_enqueue_style('font-awesome-css', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css' , array(), '1.0.0');
+
+		}
+
 	} // End enqueue_styles()
 
 	/**
