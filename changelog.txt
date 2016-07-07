@@ -1,5 +1,8 @@
 *** Sensei Course Progress Changelog ***
 
+2016.07.07 - version 1.0.7
+* Feature - Add option to choose whether modules can collapse & expand on click
+
 2015.10.08 - version 1.0.6
 * Fix - Replaces missing font declaration to ensure arrows always display
 * Fix - Updates widget constructor method due to a change in WordPress
