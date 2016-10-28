@@ -180,7 +180,7 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 			$old_module = false;
 
 			foreach( $lesson_array as $lesson ) {
-				$lesson_id = $lesson->ID;
+				$lesson_id = absint( $lesson->ID );
 				$lesson_title = htmlspecialchars( $lesson->post_title );
 				$lesson_url = get_the_permalink( $lesson_id );
 
@@ -191,7 +191,7 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 				}
 
 				// Lesson Quiz Meta
-                $lesson_quiz_id = Sensei()->lesson->lesson_quizzes( $lesson_id );
+                $lesson_quiz_id = absint( Sensei()->lesson->lesson_quizzes( $lesson_id ) );
 
 				// add 'current' class on the current lesson/quiz
 				if( $lesson_id === $post->ID || $lesson_quiz_id === $post->ID ) {
