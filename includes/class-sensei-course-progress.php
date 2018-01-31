@@ -116,7 +116,7 @@ class Sensei_Course_Progress {
 	public function enqueue_styles () {
 		global $woothemes_sensei;
 
-		wp_register_style( $this->_token . '-frontend', esc_url( $this->assets_url ) . 'css/frontend.css', $this->_version );
+		wp_register_style( $this->_token . '-frontend', esc_url( $this->assets_url ) . 'css/frontend.css', false, $this->_version );
 		wp_enqueue_style( $this->_token . '-frontend' );
 	} // End enqueue_styles()
 
