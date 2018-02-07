@@ -200,7 +200,7 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 
 				if ( isset( Sensei()->modules ) && 'on' === $allmodules ) {
 					$new_module = Sensei()->modules->get_lesson_module( $lesson_id );
-					if ( $old_module !== $new_module ) {
+					if ( $old_module != $new_module ) {
 						?>
 						<li class="course-progress-module"><h3><?php echo esc_html( $new_module->name ); ?></h3></li>
 						<?php
