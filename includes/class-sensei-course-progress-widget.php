@@ -25,9 +25,9 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 	public function __construct() {
 		/* Widget variable settings. */
 		$this->woo_widget_cssclass = 'widget_sensei_course_progress';
-		$this->woo_widget_description = __( 'Displays the current learners progress within the current course/module (only displays on single lesson page).', 'sensei-course-progress' );
+		$this->woo_widget_description = esc_html__( 'Displays the current learners progress within the current course/module (only displays on single lesson page).', 'sensei-course-progress' );
 		$this->woo_widget_idbase = 'sensei_course_progress';
-		$this->woo_widget_title = __( 'Sensei - Course Progress', 'sensei-course-progress' );
+		$this->woo_widget_title = esc_html__( 'Sensei - Course Progress', 'sensei-course-progress' );
 		/* Widget settings. */
 		$widget_ops = array( 'classname' => $this->woo_widget_cssclass, 'description' => $this->woo_widget_description );
 
@@ -46,17 +46,20 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 		if ( isset( $instance['allmodules'] ) ) {
 			$allmodules = $instance['allmodules'];
 		}
-		
+
 		// If not viewing a lesson/quiz, don't display the widget
 		if( !( ( is_singular('lesson') || is_singular('quiz') ) ) ) return;
 
 		extract( $args );
+
 		if ( is_singular('quiz') ) {
 			$current_lesson_id = absint( get_post_meta( $post->ID, '_quiz_lesson', true ) );
-		} else $current_lesson_id = $post->ID;
+		} else {
+			$current_lesson_id = $post->ID;
+		}
 
 		// get the course for the current lesson/quiz
-		$lesson_course_id = get_post_meta( $current_lesson_id, '_lesson_course', true );
+		$lesson_course_id = absint( get_post_meta( $current_lesson_id, '_lesson_course', true ) );
 
 		// Check if the user is taking the course
 		$is_user_taking_course = WooThemes_Sensei_Utils::user_started_course( $lesson_course_id, $current_user->ID );
@@ -84,7 +87,7 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 				$current_module_title = htmlspecialchars( $lesson_module->name );
 
 				// Display all modules
-				if ( 'on' == $allmodules ) {
+				if ( 'on' === $allmodules ) {
 					foreach ($course_modules as $module) {
 						// get all lessons in the module
 						$args = array(
@@ -94,7 +97,7 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 							'meta_query' => array(
 								array(
 									'key' => '_lesson_course',
-									'value' => intval( $lesson_course_id ),
+									'value' => absint( $lesson_course_id ),
 									'compare' => '='
 								)
 							),
@@ -102,7 +105,7 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 								array(
 									'taxonomy' => Sensei()->modules->taxonomy,
 									'field' => 'id',
-									'terms' => intval( $module->term_id )
+									'terms' => absint( $module->term_id )
 								)
 							),
 							'meta_key' => '_order_module_' . intval( $module->term_id ),
@@ -121,7 +124,7 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 						'meta_query' => array(
 							array(
 								'key' => '_lesson_course',
-								'value' => intval( $lesson_course_id ),
+								'value' => absint( $lesson_course_id ),
 								'compare' => '='
 							)
 						),
@@ -132,7 +135,7 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 								'terms' => intval( $lesson_module->term_id )
 							)
 						),
-						'meta_key' => '_order_module_' . intval( $lesson_module->term_id ),
+						'meta_key' => '_order_module_' . absint( $lesson_module->term_id ),
 						'orderby' => 'meta_value_num date',
 						'order' => 'ASC'
 					);
@@ -148,10 +151,10 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 		echo $before_widget; ?>
 
 		<header>
-			<h2 class="course-title"><a href="<?php echo $course_url; ?>"><?php echo $course_title; ?></a></h2>
+			<h2 class="course-title"><a href="<?php echo esc_url( $course_url ); ?>"><?php echo esc_html( $course_title ); ?></a></h2>
 
-			<?php if ( $in_module && 'on' != $allmodules ) { ?>
-				<h3 class="module-title"><?php echo $current_module_title ; ?></h3>
+			<?php if ( $in_module && 'on' !== $allmodules ) { ?>
+				<h3 class="module-title"><?php echo esc_html( $current_module_title ); ?></h3>
 			<?php } ?>
 
 		</header>
@@ -164,8 +167,8 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 		if ( ( 0 < $previous_lesson_id ) || ( 0 < $next_lesson_id ) ) { ?>
 
 			<ul class="course-progress-navigation">
-				<?php if ( 0 < $previous_lesson_id ) { ?><li class="prev"><a href="<?php echo esc_url( get_permalink( $previous_lesson_id ) ); ?>" title="<?php echo get_the_title( $previous_lesson_id ); ?>"><span><?php _e( 'Previous', 'sensei-course-progress' ); ?></span></a></li><?php } ?>
-				<?php if ( 0 < $next_lesson_id ) { ?><li class="next"><a href="<?php echo esc_url( get_permalink( $next_lesson_id ) ); ?>" title="<?php echo get_the_title( $next_lesson_id ); ?>"><span><?php _e( 'Next', 'sensei-course-progress' ); ?></span></a></li><?php } ?>
+				<?php if ( 0 < $previous_lesson_id ) { ?><li class="prev"><a href="<?php echo esc_url( get_permalink( $previous_lesson_id ) ); ?>" title="<?php echo get_the_title( $previous_lesson_id ); ?>"><span><?php esc_html_e( 'Previous', 'sensei-course-progress' ); ?></span></a></li><?php } ?>
+				<?php if ( 0 < $next_lesson_id ) { ?><li class="next"><a href="<?php echo esc_url( get_permalink( $next_lesson_id ) ); ?>" title="<?php echo get_the_title( $next_lesson_id ); ?>"><span><?php esc_html_e( 'Next', 'sensei-course-progress' ); ?></span></a></li><?php } ?>
 			</ul>
 
 		<?php } ?>
@@ -174,10 +177,10 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 
 			<?php
 
-			$old_module = '';
+			$old_module = false;
 
 			foreach( $lesson_array as $lesson ) {
-				$lesson_id = $lesson->ID;
+				$lesson_id = absint( $lesson->ID );
 				$lesson_title = htmlspecialchars( $lesson->post_title );
 				$lesson_url = get_the_permalink( $lesson_id );
 
@@ -188,18 +191,18 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 				}
 
 				// Lesson Quiz Meta
-                $lesson_quiz_id = Sensei()->lesson->lesson_quizzes( $lesson_id );
+                $lesson_quiz_id = absint( Sensei()->lesson->lesson_quizzes( $lesson_id ) );
 
 				// add 'current' class on the current lesson/quiz
-				if( $lesson_id == $post->ID || $lesson_quiz_id == $post->ID ) {
+				if( $lesson_id === $post->ID || $lesson_quiz_id === $post->ID ) {
 					$classes .= " current";
 				}
 
-				if ( isset( Sensei()->modules ) && 'on' == $allmodules ) {
+				if ( isset( Sensei()->modules ) && 'on' === $allmodules ) {
 					$new_module = Sensei()->modules->get_lesson_module( $lesson_id );
 					if ( $old_module != $new_module ) {
 						?>
-						<li class="course-progress-module"><h3><?php echo $new_module->name; ?></h3></li>
+						<li class="course-progress-module"><h3><?php echo esc_html( $new_module->name ); ?></h3></li>
 						<?php
 						$old_module = $new_module;
 					}
@@ -208,10 +211,10 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 				?>
 
 				<li class="course-progress-lesson <?php echo $classes; ?>">
-					<?php if( $lesson->ID == $post->ID || $lesson_quiz_id == $post->ID ) {
-						echo '<span>' . $lesson_title . '</span>';
+					<?php if( $lesson->ID === $post->ID || $lesson_quiz_id === $post->ID ) {
+						echo '<span>' . esc_html( $lesson_title ) . '</span>';
 					} else {
-						echo '<a href="' . $lesson_url . '">' . $lesson_title . '</a>';
+						echo '<a href="' . esc_url( $lesson_url ) . '">' . esc_html( $lesson_title ) . '</a>';
 					} ?>
 				</li>
 
@@ -233,7 +236,7 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 		$instance = $old_instance;
 
 		/* The check box is returning a boolean value. */
-		$instance['allmodules'] = $new_instance['allmodules'];
+		$instance['allmodules'] = esc_html( $new_instance['allmodules'] );
 
 		return $instance;
 	} // End update()
@@ -259,10 +262,10 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 		?>
 				<p>
 					<input type="checkbox" class="checkbox" id="<?php echo esc_attr( $this->get_field_id('allmodules') ); ?>" name="<?php echo esc_attr( $this->get_field_name('allmodules') ); ?>"<?php checked( $instance['allmodules'], 'on' ); ?> />
-					<label for="<?php echo esc_attr( $this->get_field_id('allmodules') ); ?>"><?php _e( 'Display all Modules', 'woothemes-sensei' ); ?></label><br />
+					<label for="<?php echo esc_attr( $this->get_field_id('allmodules') ); ?>"><?php esc_html_e( 'Display all Modules', 'woothemes-sensei' ); ?></label><br />
 				</p>
 		<?php } else { ?>
-				<p>There are no options for this widget.</p>
+				<p><?php esc_html_e( 'There are no options for this widget.', 'woothemes-sensei' ); ?></p>
 				<?php }
 	} // End form()
 }
