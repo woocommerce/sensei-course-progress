@@ -160,15 +160,12 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 		</header>
 
 		<?php
-		$nav_id_array = sensei_get_prev_next_lessons( $current_lesson_id );
-		$previous_lesson_id = absint( $nav_id_array['prev_lesson'] );
-		$next_lesson_id = absint( $nav_id_array['next_lesson'] );
-
-		if ( ( 0 < $previous_lesson_id ) || ( 0 < $next_lesson_id ) ) { ?>
+		$nav_array = sensei_get_prev_next_lessons( $current_lesson_id );
+		if ( isset( $nav_array['previous'] ) || isset( $nav_array['next'] ) ) { ?>
 
 			<ul class="course-progress-navigation">
-				<?php if ( 0 < $previous_lesson_id ) { ?><li class="prev"><a href="<?php echo esc_url( get_permalink( $previous_lesson_id ) ); ?>" title="<?php echo get_the_title( $previous_lesson_id ); ?>"><span><?php esc_html_e( 'Previous', 'sensei-course-progress' ); ?></span></a></li><?php } ?>
-				<?php if ( 0 < $next_lesson_id ) { ?><li class="next"><a href="<?php echo esc_url( get_permalink( $next_lesson_id ) ); ?>" title="<?php echo get_the_title( $next_lesson_id ); ?>"><span><?php esc_html_e( 'Next', 'sensei-course-progress' ); ?></span></a></li><?php } ?>
+				<?php if ( isset( $nav_array['previous'] ) ) { ?><li class="prev"><a href="<?php echo esc_url( $nav_array['previous']['url'] ); ?>" title="<?php echo $nav_array['previous']['name']; ?>"><span><?php esc_html_e( 'Previous', 'sensei-course-progress' ); ?></span></a></li><?php } ?>
+				<?php if ( isset( $nav_array['next'] ) ) { ?><li class="next"><a href="<?php echo esc_url( $nav_array['next']['url'] ); ?>" title="<?php echo $nav_array['next']['name']; ?>"><span><?php esc_html_e( 'Next', 'sensei-course-progress' ); ?></span></a></li><?php } ?>
 			</ul>
 
 		<?php } ?>
