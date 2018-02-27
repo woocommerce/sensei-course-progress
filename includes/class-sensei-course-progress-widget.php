@@ -293,6 +293,11 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 	 * @return bool
 	 */
 	private function do_link_to_module( WP_Term $module ) {
+		// Don't link to module when on the module page already.
+		if ( is_tax( 'module', $module->term_id ) ) {
+			return false;
+		}
+
 		$description = trim( $module->description );
 		if ( ! empty( $description ) ) {
 			return true;
