@@ -2,19 +2,16 @@
 	padding: 0;
 	background: rgba(0,0,0,0.02);
 	border-radius: 5px;
-	header {
+	header, .course-progress-module {
 		padding: 1.618em 1.618em 0;
+		h2, h3 {
+			margin-bottom: 0.618em;
+		}
 		h2 {
 			font-size: 1.618em;
-			margin-bottom: 0.618em;
 			a {
 				text-decoration: none;
 			}
-		}
-		h3 {
-		  	padding-bottom: 0.618em;
-			margin-bottom: 0.168em;
-			border: none;
 		}
 	}
 	.course-progress-lessons {
@@ -27,13 +24,7 @@
 			border: none;
 			border-bottom: 1px solid rgba(0,0,0,0.05);
 			margin: 0;
-			padding: 0.618em 1.618em 0.618em 1em;
 			background: rgba(255,255,255,0.6);
-			h3 {
-				margin: 0;
-				border: none;
-				padding: 0;
-			}
 		}
 		.course-progress-lesson {
 			border: none;
@@ -101,6 +92,7 @@
 			width: 50%;
 			text-align: center;
 			list-style: none;
+			border-bottom: 1px solid #ddd;
 			a {
 				background: #fefefe;
 				display: block;
