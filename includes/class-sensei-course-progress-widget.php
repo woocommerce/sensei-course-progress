@@ -48,7 +48,7 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 		}
 
 		// If not viewing a lesson/quiz, don't display the widget
-		if( !( ( is_singular('lesson') || is_singular('quiz') ) ) ) return;
+		if( ! ( is_singular( 'lesson' ) || is_singular( 'quiz' ) || is_tax( 'module' ) ) ) return;
 
 		extract( $args );
 
@@ -84,7 +84,6 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
     			$course_modules = Sensei()->modules->get_course_modules( $lesson_course_id );
 				$lesson_module = Sensei()->modules->get_lesson_module( $current_lesson_id );
 				$in_module = true;
-				$current_module_title = htmlspecialchars( $lesson_module->name );
 
 				// Display all modules
 				if ( 'on' === $allmodules ) {
@@ -154,7 +153,7 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 			<h2 class="course-title"><a href="<?php echo esc_url( $course_url ); ?>"><?php echo esc_html( $course_title ); ?></a></h2>
 
 			<?php if ( $in_module && 'on' !== $allmodules ) { ?>
-				<h3 class="module-title"><?php echo esc_html( $current_module_title ); ?></h3>
+				<h3 class="module-title"><?php echo $this->get_module_title_content( $lesson_module ); ?></h3>
 			<?php } ?>
 
 		</header>
@@ -199,7 +198,7 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 					$new_module = Sensei()->modules->get_lesson_module( $lesson_id );
 					if ( $old_module != $new_module ) {
 						?>
-						<li class="course-progress-module"><h3><?php echo esc_html( $new_module->name ); ?></h3></li>
+						<li class="course-progress-module"><h3><?php echo $this->get_module_title_content( $new_module ); ?></h3></li>
 						<?php
 						$old_module = $new_module;
 					}
@@ -265,4 +264,54 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 				<p><?php esc_html_e( 'There are no options for this widget.', 'woothemes-sensei' ); ?></p>
 				<?php }
 	} // End form()
+
+	/**
+	 * Formats the title for each module in the course outline.
+	 *
+	 * @param WP_Term $module
+	 *
+	 * @return string
+	 */
+	private function get_module_title_content( WP_Term $module ) {
+		if ( $this->do_link_to_module( $module ) ) {
+			return '<a href="' . $module->url . '">' . esc_html( $module->name ) . '</a>';
+		}
+		return esc_html( $module->name );
+	} // End get_module_title_content()
+
+
+	/**
+	 * Check if we should link to a module in the course outline.
+	 *
+	 * True if there is a module description or if the `taxonomy-module.php` template has been overridden.
+	 *
+	 * @param WP_Term $module
+	 *
+	 * @return bool
+	 */
+	private function do_link_to_module( WP_Term $module ) {
+		// Don't link to module when on the module page already.
+		if ( is_tax( 'module', $module->term_id ) ) {
+			return false;
+		}
+
+		$description = trim( $module->description );
+		if ( ! empty( $description ) ) {
+			return true;
+		}
+
+		return $this->is_module_tax_template_overriden();
+	} // End do_link_to_module()
+
+	/**
+	 * Checks if a module taxonomy template file has been overridden.
+	 *
+	 * @return bool True if taxonomy template has been overridden.
+	 */
+	private function is_module_tax_template_overriden() {
+		$file = 'taxonomy-module.php';
+		$find = array( $file, Sensei()->template_url . $file );
+		$template = locate_template( $find );
+		return (bool) $template;
+	} // End is_module_tax_template_overriden()
 }
