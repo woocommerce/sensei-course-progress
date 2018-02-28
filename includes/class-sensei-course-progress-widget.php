@@ -151,11 +151,6 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 
 		<header>
 			<h2 class="course-title"><a href="<?php echo esc_url( $course_url ); ?>"><?php echo esc_html( $course_title ); ?></a></h2>
-
-			<?php if ( $in_module && 'on' !== $allmodules ) { ?>
-				<h3 class="module-title"><?php echo $this->get_module_title_content( $lesson_module ); ?></h3>
-			<?php } ?>
-
 		</header>
 
 		<?php
@@ -194,11 +189,11 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 					$classes .= " current";
 				}
 
-				if ( isset( Sensei()->modules ) && 'on' === $allmodules ) {
+				if ( isset( Sensei()->modules ) ) {
 					$new_module = Sensei()->modules->get_lesson_module( $lesson_id );
 					if ( $old_module != $new_module ) {
 						?>
-						<li class="course-progress-module"><h3><?php echo $this->get_module_title_content( $new_module ); ?></h3></li>
+						<li class="course-progress-module"><h3 class="module-title"><?php echo $this->get_module_title_content( $new_module ); ?></h3></li>
 						<?php
 						$old_module = $new_module;
 					}
