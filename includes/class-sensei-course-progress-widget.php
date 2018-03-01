@@ -185,7 +185,7 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
                 $lesson_quiz_id = absint( Sensei()->lesson->lesson_quizzes( $lesson_id ) );
 
 				// add 'current' class on the current lesson/quiz
-				if( $lesson_id === $post->ID || $lesson_quiz_id === $post->ID ) {
+				if( ! is_tax( 'module' ) && ( $lesson_id === $post->ID || $lesson_quiz_id === $post->ID ) ) {
 					$classes .= " current";
 				}
 
