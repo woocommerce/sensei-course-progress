@@ -1,0 +1,31 @@
+{
+	"name": "sensei-course-progress",
+	"version": "1.0.7",
+	"description": "Sensei widget that displays all the lessons in the current course",
+	"main": "sensei-course-progress.php",
+	"scripts": {
+		"build": "gulp build"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/woocommerce/sensei-course-progress.git"
+	},
+	"keywords": [
+		"sensei"
+	],
+	"author": "Automattic",
+	"license": "GPL-3.0",
+	"bugs": {
+		"url": "https://github.com/woocommerce/sensei-course-progress/issues"
+	},
+	"homepage": "https://github.com/woocommerce/sensei-course-progress#readme",
+	"devDependencies": {
+		"del": "^3.0.0",
+		"gulp": "^3.9.1",
+		"gulp-clean-css": "^3.9.2",
+		"gulp-rename": "^1.2.2",
+		"gulp-sass": "^3.1.0",
+		"gulp-sourcemaps": "^2.6.4",
+		"run-sequence": "^2.2.1"
+	}
+}
