@@ -32,7 +32,7 @@
 	} );
 
 	gulp.task( 'php', function() {
-		return gulp.src( '**/*.php' )
+		return gulp.src( [ '**/*.php', '!node_modules/**', '!build/**' ] )
 			.pipe( gulp.dest( 'build' ) );
 	} );
 
