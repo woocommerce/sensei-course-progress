@@ -4,7 +4,8 @@
 	"description": "Sensei widget that displays all the lessons in the current course",
 	"main": "sensei-course-progress.php",
 	"scripts": {
-		"build": "gulp build"
+		"build": "gulp build",
+		"dev": "gulp build-dev"
 	},
 	"repository": {
 		"type": "git",

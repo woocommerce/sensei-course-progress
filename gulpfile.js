@@ -51,6 +51,10 @@
 		runSequence( 'clean', [ 'css', 'php', 'languages' ], cb );
 	} );
 
+	gulp.task( 'build-dev', function ( cb ) {
+		runSequence( 'clean', [ 'css', 'php', 'languages' ], [ 'watch' ], cb );
+	});
+
 	gulp.task( 'default', function( cb ) {
 		runSequence( 'build', cb );
 	} );
