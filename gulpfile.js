@@ -103,7 +103,6 @@
 	gulp.task( 'watch', function() {
 		gulp.watch( paths.css, [ 'css' ]);
 		gulp.watch( [ '**/*.php', '!node_modules/**', '!build/**' ], [ 'php' ]);
-		gulp.watch( 'languages/*.*', [ 'languages' ]);
 	} );
 
 	gulp.task( 'build', function ( cb ) {
