@@ -110,7 +110,7 @@
 	} );
 
 	gulp.task( 'build-dev', function ( cb ) {
-		runSequence( 'clean', [ 'css', 'php', 'languages' ], [ 'watch' ], cb );
+		runSequence( 'clean', [ 'css', 'php' ], [ 'watch' ], cb );
 	});
 
 	gulp.task( 'default', function( cb ) {
