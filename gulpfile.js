@@ -103,7 +103,6 @@
 	gulp.task( 'watch', function() {
 		gulp.watch( paths.css, [ 'css' ]);
 		gulp.watch( [ '**/*.php', '!node_modules/**', '!build/**' ], [ 'php' ]);
-		gulp.watch( 'languages/*.*', [ 'languages' ]);
 	} );
 
 	gulp.task( 'build', function ( cb ) {
@@ -111,7 +110,7 @@
 	} );
 
 	gulp.task( 'build-dev', function ( cb ) {
-		runSequence( 'clean', [ 'css', 'php', 'languages' ], [ 'watch' ], cb );
+		runSequence( 'clean', [ 'css', 'php' ], [ 'watch' ], cb );
 	});
 
 	gulp.task( 'default', function( cb ) {
