@@ -264,49 +264,20 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 	 * Formats the title for each module in the course outline.
 	 *
 	 * @param WP_Term $module
-	 *
 	 * @return string
 	 */
 	private function get_module_title_content( WP_Term $module ) {
-		if ( $this->do_link_to_module( $module ) ) {
+		$link_to_module = false;
+
+		if ( method_exists( Sensei()->modules, 'do_link_to_module' ) ) {
+			$link_to_module = Sensei()->modules->do_link_to_module( $module );
+		}
+
+		if ( $link_to_module ) {
 			return '<a href="' . $module->url . '">' . esc_html( $module->name ) . '</a>';
 		}
+
 		return esc_html( $module->name );
 	} // End get_module_title_content()
 
-
-	/**
-	 * Check if we should link to a module in the course outline.
-	 *
-	 * True if there is a module description or if the `taxonomy-module.php` template has been overridden.
-	 *
-	 * @param WP_Term $module
-	 *
-	 * @return bool
-	 */
-	private function do_link_to_module( WP_Term $module ) {
-		// Don't link to module when on the module page already.
-		if ( is_tax( 'module', $module->term_id ) ) {
-			return false;
-		}
-
-		$description = trim( $module->description );
-		if ( ! empty( $description ) ) {
-			return true;
-		}
-
-		return $this->is_module_tax_template_overriden();
-	} // End do_link_to_module()
-
-	/**
-	 * Checks if a module taxonomy template file has been overridden.
-	 *
-	 * @return bool True if taxonomy template has been overridden.
-	 */
-	private function is_module_tax_template_overriden() {
-		$file = 'taxonomy-module.php';
-		$find = array( $file, Sensei()->template_url . $file );
-		$template = locate_template( $find );
-		return (bool) $template;
-	} // End is_module_tax_template_overriden()
 }
