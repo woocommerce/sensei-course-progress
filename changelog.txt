@@ -1,5 +1,17 @@
 *** Sensei Course Progress Changelog ***
 
+2018.04.04 - version 1.0.7
+* Fix: Widget no longer shows navigation arrows
+* Fix: Fix for current lesson indicator when viewing module
+* Fix: Double encoding of ampersand on module titles
+* Tweak: Make UI consistent between show all/not all modules
+* Tweak: Escape data and use absolute paths to files
+* Tweak: The modules taxonomy query should only send term id
+* Tweak: Use correct version of frontend.css file
+* Tweak: Update links in plugin header
+* New: Add Russian translations
+* New: Link to module if it has a description/template overridden
+
 2015.10.08 - version 1.0.6
 * Fix - Replaces missing font declaration to ensure arrows always display
 * Fix - Updates widget constructor method due to a change in WordPress
