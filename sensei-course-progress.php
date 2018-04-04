@@ -7,7 +7,7 @@
  * Author: WooThemes
  * Author URI: https://woocommerce.com/
  * Requires at least: 3.8
- * Tested up to: 4.3
+ * Tested up to: 4.9
  *
  * @package WordPress
  * @author WooThemes
