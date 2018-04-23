@@ -140,7 +140,6 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 				} else {
 					// Only display current module
 			    	// get all lessons in the current module
-					// TODO: tweak this for Other Lessons
 					$args = array(
 						'post_type' => 'lesson',
 						'post_status' => 'publish',
@@ -152,17 +151,30 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 								'compare' => '='
 							)
 						),
-						'tax_query' => array(
+					);
+
+					if ( $lesson_module ) {
+						$args['tax_query'] = array(
 							array(
 								'taxonomy' => Sensei()->modules->taxonomy,
-								'field' => 'id',
-								'terms' => intval( $lesson_module->term_id )
-							)
-						),
-						'meta_key' => '_order_module_' . absint( $lesson_module->term_id ),
-						'orderby' => 'meta_value_num date',
-						'order' => 'ASC'
-					);
+								'field'    => 'id',
+								'terms'    => intval( $lesson_module->term_id ),
+							),
+						);
+						$args['meta_key']  = '_order_module_' . absint( $lesson_module->term_id );
+						$args['orderby']   = 'meta_value_num date';
+						$args['order']     = 'ASC';
+					} else {
+						$args['tax_query'] = array(
+							array(
+								'taxonomy' => Sensei()->modules->taxonomy,
+								'operator' => 'NOT EXISTS',
+							),
+						);
+						$args['meta_key']  = '_order_' . absint( $lesson_course_id );
+						$args['orderby']   = 'meta_value_num date';
+						$args['order']     = 'ASC';
+					}
 
 					$lesson_array = get_posts( $args );
 				}
