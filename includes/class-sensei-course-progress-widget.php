@@ -85,6 +85,12 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 				$lesson_module = Sensei()->modules->get_lesson_module( $current_lesson_id );
 				$in_module = true;
 
+				// Get an array of module ids.
+				$course_module_ids = array();
+				foreach ( $course_modules as $module ) {
+					$course_module_ids[] = $module->term_id;
+				}
+
 				// Display all modules
 				if ( 'on' === $allmodules ) {
 					foreach ($course_modules as $module) {
@@ -114,7 +120,8 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 						$lesson_array = array_merge( $lesson_array, get_posts( $args) );
 					}
 
-					// Get all lessons in the course that are not in a module.
+					// Get all lessons in the course that are not in any of the
+					// course's modules.
 					$args = array(
 						'post_type' => 'lesson',
 						'post_status' => 'publish',
@@ -129,7 +136,9 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 						'tax_query' => array(
 							array(
 								'taxonomy' => Sensei()->modules->taxonomy,
-								'operator' => 'NOT EXISTS',
+								'field'    => 'id',
+								'terms'    => $course_module_ids,
+								'operator' => 'NOT IN',
 							)
 						),
 						'meta_key' => '_order_' . intval( $lesson_course_id ),
@@ -153,7 +162,7 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 						),
 					);
 
-					if ( $lesson_module ) {
+					if ( in_array( $lesson_module->term_id, $course_module_ids ) ) {
 						$args['tax_query'] = array(
 							array(
 								'taxonomy' => Sensei()->modules->taxonomy,
@@ -168,7 +177,9 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 						$args['tax_query'] = array(
 							array(
 								'taxonomy' => Sensei()->modules->taxonomy,
-								'operator' => 'NOT EXISTS',
+								'field'    => 'id',
+								'terms'    => $course_module_ids,
+								'operator' => 'NOT IN',
 							),
 						);
 						$args['meta_key']  = '_order_' . absint( $lesson_course_id );
