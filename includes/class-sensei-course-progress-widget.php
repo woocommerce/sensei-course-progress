@@ -79,11 +79,17 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 
 		if ( 0 < $current_lesson_id ) {
 			// get an array of lessons in the module if there is one
-			if( isset( Sensei()->modules ) && has_term( '', Sensei()->modules->taxonomy, $current_lesson_id ) ) {
+			if( isset( Sensei()->modules ) ) {
 				// Get all modules
     			$course_modules = Sensei()->modules->get_course_modules( $lesson_course_id );
 				$lesson_module = Sensei()->modules->get_lesson_module( $current_lesson_id );
 				$in_module = true;
+
+				// Get an array of module ids.
+				$course_module_ids = array();
+				foreach ( $course_modules as $module ) {
+					$course_module_ids[] = $module->term_id;
+				}
 
 				// Display all modules
 				if ( 'on' === $allmodules ) {
@@ -113,9 +119,9 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 						);
 						$lesson_array = array_merge( $lesson_array, get_posts( $args) );
 					}
-				} else {
-					// Only display current module
-			    	// get all lessons in the current module
+
+					// Get all lessons in the course that are not in any of the
+					// course's modules.
 					$args = array(
 						'post_type' => 'lesson',
 						'post_status' => 'publish',
@@ -130,19 +136,61 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 						'tax_query' => array(
 							array(
 								'taxonomy' => Sensei()->modules->taxonomy,
-								'field' => 'id',
-								'terms' => intval( $lesson_module->term_id )
+								'field'    => 'id',
+								'terms'    => $course_module_ids,
+								'operator' => 'NOT IN',
 							)
 						),
-						'meta_key' => '_order_module_' . absint( $lesson_module->term_id ),
+						'meta_key' => '_order_' . intval( $lesson_course_id ),
 						'orderby' => 'meta_value_num date',
 						'order' => 'ASC'
 					);
+					$lesson_array = array_merge( $lesson_array, get_posts( $args) );
+				} else {
+					// Only display current module
+			    	// get all lessons in the current module
+					$args = array(
+						'post_type' => 'lesson',
+						'post_status' => 'publish',
+						'posts_per_page' => -1,
+						'meta_query' => array(
+							array(
+								'key' => '_lesson_course',
+								'value' => absint( $lesson_course_id ),
+								'compare' => '='
+							)
+						),
+					);
+
+					if ( in_array( $lesson_module->term_id, $course_module_ids ) ) {
+						$args['tax_query'] = array(
+							array(
+								'taxonomy' => Sensei()->modules->taxonomy,
+								'field'    => 'id',
+								'terms'    => intval( $lesson_module->term_id ),
+							),
+						);
+						$args['meta_key']  = '_order_module_' . absint( $lesson_module->term_id );
+						$args['orderby']   = 'meta_value_num date';
+						$args['order']     = 'ASC';
+					} else {
+						$args['tax_query'] = array(
+							array(
+								'taxonomy' => Sensei()->modules->taxonomy,
+								'field'    => 'id',
+								'terms'    => $course_module_ids,
+								'operator' => 'NOT IN',
+							),
+						);
+						$args['meta_key']  = '_order_' . absint( $lesson_course_id );
+						$args['orderby']   = 'meta_value_num date';
+						$args['order']     = 'ASC';
+					}
 
 					$lesson_array = get_posts( $args );
 				}
 			} else {
-				// if there's no module, get all lessons in the course
+				// if modules are not loaded, get all lessons in the course.
 				$lesson_array = Sensei()->course->course_lessons( $lesson_course_id );
 			}
 		}
@@ -191,9 +239,19 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 
 				if ( isset( Sensei()->modules ) ) {
 					$new_module = Sensei()->modules->get_lesson_module( $lesson_id );
+
+					// Note that if there are no modules, all the modules for
+					// the lessons will == false and so no module header will
+					// be displayed here.
 					if ( $old_module != $new_module ) {
+						if ( $new_module ) {
+							$module_title = $this->get_module_title_content( $new_module );
+						} else {
+							$module_title = esc_html( __( 'Other Lessons', 'woothemes-sensei' ) );
+						}
+
 						?>
-						<li class="course-progress-module"><h3 class="module-title"><?php echo $this->get_module_title_content( $new_module ); ?></h3></li>
+						<li class="course-progress-module"><h3 class="module-title"><?php echo $module_title; ?></h3></li>
 						<?php
 						$old_module = $new_module;
 					}
