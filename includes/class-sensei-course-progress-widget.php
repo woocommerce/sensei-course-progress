@@ -162,7 +162,7 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 						),
 					);
 
-					if ( in_array( $lesson_module->term_id, $course_module_ids ) ) {
+					if ( isset( $lesson_module ) && in_array( $lesson_module->term_id, $course_module_ids ) ) {
 						$args['tax_query'] = array(
 							array(
 								'taxonomy' => Sensei()->modules->taxonomy,
