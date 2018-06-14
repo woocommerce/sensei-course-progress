@@ -162,7 +162,7 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 						),
 					);
 
-					if ( in_array( $lesson_module->term_id, $course_module_ids ) ) {
+					if ( ! empty( $lesson_module ) && in_array( $lesson_module->term_id, $course_module_ids ) ) {
 						$args['tax_query'] = array(
 							array(
 								'taxonomy' => Sensei()->modules->taxonomy,
@@ -285,7 +285,7 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 		$instance = $old_instance;
 
 		/* The check box is returning a boolean value. */
-		$instance['allmodules'] = esc_html( $new_instance['allmodules'] );
+		$instance['allmodules'] = isset( $new_instance['allmodules'] ) ? esc_html( $new_instance['allmodules'] ) : '';
 
 		return $instance;
 	} // End update()
