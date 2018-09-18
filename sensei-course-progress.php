@@ -44,7 +44,11 @@ if ( ! function_exists( 'is_sensei_active' ) ) {
   }
 }
 
-if( is_sensei_active() ) {
+if( !is_sensei_active() ) {
+
+	add_action( 'admin_notices', 'display_activation_error' );
+
+} else {
 
 	require_once( dirname( __FILE__ ) . '/includes/class-sensei-course-progress.php' );
 
@@ -59,4 +63,17 @@ if( is_sensei_active() ) {
 	}
 
 	Sensei_Course_Progress();
+}
+
+/**
+ * Display error message notice in the admin.
+ *
+ * @param string $message
+ */
+function display_activation_error( $message ) {
+	
+	echo '<div class="error">';
+	echo '<em>Sensei Course Progress</em> requires Sensei to be installed and activated.';
+	echo '</div>';
+
 }
