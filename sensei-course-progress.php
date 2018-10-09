@@ -17,6 +17,36 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
+ * Sensei Detection
+ */
+function sensei_course_progress_init(){
+
+	if ( ! class_exists('Sensei_Main')) {
+		
+		add_action( 'admin_notices', 'display_activation_error' );
+		add_action( 'network_admin_notices', 'display_activation_error' );
+	
+	} else {
+
+		require_once( dirname( __FILE__ ) . '/includes/class-sensei-course-progress.php' );
+
+		/**
+		 * Returns the main instance of Sensei_Course_Progress to prevent the need to use globals.
+		 *
+		 * @since  1.0.0
+		 * @return object Sensei_Course_Progress
+		 */
+		function Sensei_Course_Progress() {
+			return Sensei_Course_Progress::instance( __FILE__, '1.0.7' );
+		}
+
+		Sensei_Course_Progress();
+
+		}
+}
+add_action( 'plugins_loaded', 'sensei_course_progress_init' );
+
+/**
  * Required functions
  */
 if ( ! function_exists( 'woothemes_queue_update' ) ) {
@@ -27,43 +57,6 @@ if ( ! function_exists( 'woothemes_queue_update' ) ) {
  * Plugin updates
  */
 woothemes_queue_update( plugin_basename( __FILE__ ), 'ec0f55d8fa7c517dc1844f5c873a77da', 435833 );
-
-/**
- * Functions used by plugins
- */
-if ( ! class_exists( 'WooThemes_Sensei_Dependencies' ) ) {
-	require_once( dirname( __FILE__ ) . '/woo-includes/class-woothemes-sensei-dependencies.php' );
-}
-
-/**
- * Sensei Detection
- */
-if ( ! function_exists( 'is_sensei_active' ) ) {
-  function is_sensei_active() {
-    return WooThemes_Sensei_Dependencies::sensei_active_check();
-  }
-}
-
-if( !is_sensei_active() ) {
-
-	add_action( 'admin_notices', 'display_activation_error' );
-
-} else {
-
-	require_once( dirname( __FILE__ ) . '/includes/class-sensei-course-progress.php' );
-
-	/**
-	 * Returns the main instance of Sensei_Course_Progress to prevent the need to use globals.
-	 *
-	 * @since  1.0.0
-	 * @return object Sensei_Course_Progress
-	 */
-	function Sensei_Course_Progress() {
-		return Sensei_Course_Progress::instance( __FILE__, '1.0.7' );
-	}
-
-	Sensei_Course_Progress();
-}
 
 /**
  * Display error message notice in the admin.
