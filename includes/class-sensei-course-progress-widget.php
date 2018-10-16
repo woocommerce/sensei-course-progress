@@ -195,7 +195,7 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 			}
 		}
 
-		echo $before_widget; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
+		echo wp_kses_post( $before_widget );
     ?>
 
 		<header>
@@ -254,7 +254,7 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 						?>
 						<li class="course-progress-module">
 							<h3 class="module-title">
-								<?php echo $module_title; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped ?>
+								<?php echo wp_kses_post( $module_title ); ?>
 							</h3>
 						</li>
 						<?php
@@ -276,7 +276,7 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 
 		</ul>
 
-		<?php echo $after_widget; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
+		<?php echo wp_kses_post( $after_widget );
 	}
 
 	/**
