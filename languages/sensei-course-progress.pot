@@ -1,11 +1,11 @@
-# Copyright (C) 2018 WooThemes
+# Copyright (C) 2018 Automattic
 # This file is distributed under the same license as the Sensei Course Progress package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Sensei Course Progress 1.0.7\n"
+"Project-Id-Version: Sensei Course Progress 1.0.8\n"
 "Report-Msgid-Bugs-To: "
 "https://github.com/woocommerce/sensei-course-progress/issues\n"
-"POT-Creation-Date: 2018-04-04 13:12:23+00:00\n"
+"POT-Creation-Date: 2018-10-23 17:24:54+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -34,19 +34,23 @@ msgstr ""
 msgid "Sensei - Course Progress"
 msgstr ""
 
-#: includes/class-sensei-course-progress-widget.php:161
+#: includes/class-sensei-course-progress-widget.php:210
 msgid "Previous"
 msgstr ""
 
-#: includes/class-sensei-course-progress-widget.php:162
+#: includes/class-sensei-course-progress-widget.php:211
 msgid "Next"
 msgstr ""
 
-#: includes/class-sensei-course-progress-widget.php:256
+#: includes/class-sensei-course-progress-widget.php:251
+msgid "Other Lessons"
+msgstr ""
+
+#: includes/class-sensei-course-progress-widget.php:319
 msgid "Display all Modules"
 msgstr ""
 
-#: includes/class-sensei-course-progress-widget.php:259
+#: includes/class-sensei-course-progress-widget.php:322
 msgid "There are no options for this widget."
 msgstr ""
 
