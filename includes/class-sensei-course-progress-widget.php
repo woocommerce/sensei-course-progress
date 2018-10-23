@@ -2,7 +2,7 @@
 /**
  * Sensei Course Progress Widget
  *
- * @author 		WooThemes
+ * @author 		Automattic
  * @category 	Widgets
  * @package 	Sensei/Widgets
  * @version 	1.0.0
