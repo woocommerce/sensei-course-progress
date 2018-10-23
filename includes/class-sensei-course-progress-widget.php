@@ -195,7 +195,8 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 			}
 		}
 
-		echo $before_widget; ?>
+		echo wp_kses_post( $before_widget );
+    ?>
 
 		<header>
 			<h2 class="course-title"><a href="<?php echo esc_url( $course_url ); ?>"><?php echo esc_html( $course_title ); ?></a></h2>
@@ -206,8 +207,8 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 		if ( isset( $nav_array['previous'] ) || isset( $nav_array['next'] ) ) { ?>
 
 			<ul class="course-progress-navigation">
-				<?php if ( isset( $nav_array['previous'] ) ) { ?><li class="prev"><a href="<?php echo esc_url( $nav_array['previous']['url'] ); ?>" title="<?php echo $nav_array['previous']['name']; ?>"><span><?php esc_html_e( 'Previous', 'sensei-course-progress' ); ?></span></a></li><?php } ?>
-				<?php if ( isset( $nav_array['next'] ) ) { ?><li class="next"><a href="<?php echo esc_url( $nav_array['next']['url'] ); ?>" title="<?php echo $nav_array['next']['name']; ?>"><span><?php esc_html_e( 'Next', 'sensei-course-progress' ); ?></span></a></li><?php } ?>
+				<?php if ( isset( $nav_array['previous'] ) ) { ?><li class="prev"><a href="<?php echo esc_url( $nav_array['previous']['url'] ); ?>" title="<?php echo esc_attr( $nav_array['previous']['name'] ); ?>"><span><?php esc_html_e( 'Previous', 'sensei-course-progress' ); ?></span></a></li><?php } ?>
+				<?php if ( isset( $nav_array['next'] ) ) { ?><li class="next"><a href="<?php echo esc_url( $nav_array['next']['url'] ); ?>" title="<?php echo esc_attr( $nav_array['next']['name'] ); ?>"><span><?php esc_html_e( 'Next', 'sensei-course-progress' ); ?></span></a></li><?php } ?>
 			</ul>
 
 		<?php } ?>
@@ -251,7 +252,11 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 						}
 
 						?>
-						<li class="course-progress-module"><h3 class="module-title"><?php echo $module_title; ?></h3></li>
+						<li class="course-progress-module">
+							<h3 class="module-title">
+								<?php echo wp_kses_post( $module_title ); ?>
+							</h3>
+						</li>
 						<?php
 						$old_module = $new_module;
 					}
@@ -259,7 +264,7 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 
 				?>
 
-				<li class="course-progress-lesson <?php echo $classes; ?>">
+				<li class="course-progress-lesson <?php echo esc_attr( $classes ); ?>">
 					<?php if( ! is_tax( 'module' ) && ( $lesson->ID === $post->ID || $lesson_quiz_id === $post->ID ) ) {
 						echo '<span>' . esc_html( $lesson_title ) . '</span>';
 					} else {
@@ -271,7 +276,7 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 
 		</ul>
 
-		<?php echo $after_widget;
+		<?php echo wp_kses_post( $after_widget );
 	}
 
 	/**
@@ -332,7 +337,7 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 		}
 
 		if ( $link_to_module ) {
-			return '<a href="' . $module->url . '">' . esc_html( $module->name ) . '</a>';
+			return '<a href="' . esc_url( $module->url ) . '">' . esc_html( $module->name ) . '</a>';
 		}
 
 		return esc_html( $module->name );
