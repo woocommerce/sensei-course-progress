@@ -13,7 +13,8 @@
 		wpi18n = require( 'node-wp-i18n' );
 
 	const paths = {
-		css: [ 'assets/css/*.scss' ]
+		css: [ 'assets/css/*.scss' ],
+		docs: [ 'changelog.txt', 'README.md' ],
 	};
 
 	gulp.task( 'clean', function () {
@@ -34,7 +35,7 @@
 	} );
 
 	gulp.task( 'php', function() {
-		return gulp.src( [ '**/*.php', '!node_modules/**', '!build/**' ] )
+		return gulp.src( [ '**/*.php', '!node_modules/**', '!build/**', '!vendor/**' ] )
 			.pipe( gulp.dest( 'build' ) );
 	} );
 
@@ -42,7 +43,7 @@
 		var options = {
 			cwd: process.cwd(),
 			domainPath: '/languages',
-			exclude: [ 'node_modules/.*', 'build/.*' ],
+			exclude: [ 'node_modules/.*', 'build/.*', 'vendor/.*' ],
 			mainFile: 'sensei-course-progress.php',
 			potComments: '',
 			potFilename: 'sensei-course-progress.pot',
@@ -100,13 +101,18 @@
 			.pipe( gulp.dest( 'build/languages' ) );
 	} );
 
+	gulp.task( 'docs', function() {
+		return gulp.src( paths.docs )
+			.pipe( gulp.dest( 'build' ) );
+	} );
+
 	gulp.task( 'watch', function() {
 		gulp.watch( paths.css, [ 'css' ]);
-		gulp.watch( [ '**/*.php', '!node_modules/**', '!build/**' ], [ 'php' ]);
+		gulp.watch( [ '**/*.php', '!node_modules/**', '!build/**', '!vendor/**' ], [ 'php' ]);
 	} );
 
 	gulp.task( 'build', function ( cb ) {
-		runSequence( 'clean', [ 'css', 'php', 'languages' ], cb );
+		runSequence( 'clean', [ 'css', 'php', 'languages', 'docs' ], cb );
 	} );
 
 	gulp.task( 'build-dev', function ( cb ) {
