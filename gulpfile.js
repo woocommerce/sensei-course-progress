@@ -15,7 +15,7 @@
 
 	const paths = {
 		css: [ 'assets/css/*.scss' ],
-		docs: [ 'changelog.txt', 'README.md' ],
+		docs: [ 'changelog.txt', 'README.md', 'LICENSE' ],
 		buildDir: 'build/sensei-course-progress',
 		packageZip: 'build/sensei-course-progress.zip',
 	};
