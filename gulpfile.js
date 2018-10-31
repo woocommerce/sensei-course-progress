@@ -1,20 +1,23 @@
 ( () => {
 	'use strict';
 
-	const cleanCSS = require( 'gulp-clean-css' ),
-		del = require( 'del' ),
-		env = process.env.NODE_ENV || 'prod',
-		gulp = require( 'gulp' ),
-		path = require( 'path' ),
-		rename = require( 'gulp-rename' ),
+	const cleanCSS  = require( 'gulp-clean-css' ),
+		del         = require( 'del' ),
+		env         = process.env.NODE_ENV || 'prod',
+		gulp        = require( 'gulp' ),
+		path        = require( 'path' ),
+		rename      = require( 'gulp-rename' ),
 		runSequence = require( 'run-sequence' ),
-		sass = require( 'gulp-sass' ),
-		sourcemaps = require( 'gulp-sourcemaps' ),
-		wpi18n = require( 'node-wp-i18n' );
+		sass        = require( 'gulp-sass' ),
+		sourcemaps  = require( 'gulp-sourcemaps' ),
+		wpi18n      = require( 'node-wp-i18n' ),
+		zip         = require( 'gulp-zip' );
 
 	const paths = {
 		css: [ 'assets/css/*.scss' ],
-		docs: [ 'changelog.txt', 'README.md' ],
+		docs: [ 'changelog.txt', 'README.md', 'LICENSE' ],
+		buildDir: 'build/sensei-course-progress',
+		packageZip: 'build/sensei-course-progress.zip',
 	};
 
 	gulp.task( 'clean', function () {
@@ -31,12 +34,12 @@
 			.pipe( cleanCSS() )
 			.pipe( sourcemaps.write() )
 			.pipe( rename( { suffix: '.min' } ) )
-			.pipe( gulp.dest( 'build/assets/css' ) )
+			.pipe( gulp.dest( paths.buildDir + '/assets/css' ) )
 	} );
 
 	gulp.task( 'php', function() {
 		return gulp.src( [ '**/*.php', '!node_modules/**', '!build/**', '!vendor/**' ] )
-			.pipe( gulp.dest( 'build' ) );
+			.pipe( gulp.dest( paths.buildDir ) );
 	} );
 
 	gulp.task( 'i18n', function( cb ) {
@@ -98,12 +101,12 @@
 
 	gulp.task( 'languages', [ 'i18n' ], function() {
 		return gulp.src( 'languages/*.*' )
-			.pipe( gulp.dest( 'build/languages' ) );
+			.pipe( gulp.dest( paths.buildDir + '/languages' ) );
 	} );
 
 	gulp.task( 'docs', function() {
 		return gulp.src( paths.docs )
-			.pipe( gulp.dest( 'build' ) );
+			.pipe( gulp.dest( paths.buildDir ) );
 	} );
 
 	gulp.task( 'watch', function() {
@@ -118,6 +121,16 @@
 	gulp.task( 'build-dev', function ( cb ) {
 		runSequence( 'clean', [ 'css', 'php' ], [ 'watch' ], cb );
 	});
+
+	gulp.task( 'zip-package', function() {
+		return gulp.src( paths.buildDir + '/**/*', { base: paths.buildDir + '/..' } )
+			.pipe( zip( paths.packageZip ) )
+			.pipe( gulp.dest( '.' ) );
+	} );
+
+	gulp.task( 'package', function( cb ) {
+		runSequence( 'build', 'zip-package', cb );
+	} );
 
 	gulp.task( 'default', function( cb ) {
 		runSequence( 'build', cb );

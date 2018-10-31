@@ -11,7 +11,7 @@ If you'd like to do some development and run the plugin locally, you can do that
 1.	Make sure you have `git`, `node`, and `npm` installed.
 2.	Clone this repository locally.
 3.	Execute `npm install` and `gulp build` from the root directory of the repository.
-4.	Copy the contents of the `/build` folder to `wp-content/plugins/sensei-course-progress`.
+4.	Copy the `/build/sensei-course-progress` folder to `wp-content/plugins/sensei-course-progress`.
 
 ## Contributing
 All contributions are greatly appreciated and welcome! Please submit a pull request and we will do our best to incorporate it.
