@@ -28,35 +28,22 @@ if ( ! function_exists( 'woothemes_queue_update' ) ) {
  */
 woothemes_queue_update( plugin_basename( __FILE__ ), 'ec0f55d8fa7c517dc1844f5c873a77da', 435833 );
 
+require_once __DIR__ . '/includes/class-sensei-course-progress-dependency-checker.php';
+
+if ( ! Sensei_Course_Progress_Dependency_Checker::are_dependencies_met() ) {
+	return;
+}
+
+require_once( dirname( __FILE__ ) . '/includes/class-sensei-course-progress.php' );
+
 /**
- * Functions used by plugins
+ * Returns the main instance of Sensei_Course_Progress to prevent the need to use globals.
+ *
+ * @since  1.0.0
+ * @return object Sensei_Course_Progress
  */
-if ( ! class_exists( 'WooThemes_Sensei_Dependencies' ) ) {
-	require_once( dirname( __FILE__ ) . '/woo-includes/class-woothemes-sensei-dependencies.php' );
+function Sensei_Course_Progress() {
+	return Sensei_Course_Progress::instance( __FILE__, '1.0.8' );
 }
 
-/**
- * Sensei Detection
- */
-if ( ! function_exists( 'is_sensei_active' ) ) {
-  function is_sensei_active() {
-    return WooThemes_Sensei_Dependencies::sensei_active_check();
-  }
-}
-
-if( is_sensei_active() ) {
-
-	require_once( dirname( __FILE__ ) . '/includes/class-sensei-course-progress.php' );
-
-	/**
-	 * Returns the main instance of Sensei_Course_Progress to prevent the need to use globals.
-	 *
-	 * @since  1.0.0
-	 * @return object Sensei_Course_Progress
-	 */
-	function Sensei_Course_Progress() {
-		return Sensei_Course_Progress::instance( __FILE__, '1.0.8' );
-	}
-
-	Sensei_Course_Progress();
-}
+Sensei_Course_Progress();
