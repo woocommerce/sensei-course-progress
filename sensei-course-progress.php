@@ -28,7 +28,7 @@ if ( ! function_exists( 'woothemes_queue_update' ) ) {
  */
 woothemes_queue_update( plugin_basename( __FILE__ ), 'ec0f55d8fa7c517dc1844f5c873a77da', 435833 );
 
-require_once __DIR__ . '/includes/class-sensei-course-progress-dependency-checker.php';
+require_once dirname( __FILE__ ) . '/includes/class-sensei-course-progress-dependency-checker.php';
 
 if ( ! Sensei_Course_Progress_Dependency_Checker::are_dependencies_met() ) {
 	return;
