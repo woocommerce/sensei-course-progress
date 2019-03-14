@@ -1,4 +1,4 @@
-.widget.widget_sensei_course_progress {
+.widget_sensei_course_progress {
 	padding: 0;
 	background: rgba(0,0,0,0.02);
 	border-radius: 5px;
@@ -82,9 +82,7 @@
 			}
 		}
 	}
-}
 
-.widget {
 	ul.course-progress-navigation {
 		background: #eee;
 		border-top: 1px solid #ddd;
