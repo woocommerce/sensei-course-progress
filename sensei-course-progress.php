@@ -8,6 +8,7 @@
  * Author URI: https://automattic.com
  * Requires at least: 3.8
  * Tested up to: 4.9
+ * Woo: 435833:ec0f55d8fa7c517dc1844f5c873a77da
  *
  * @package WordPress
  * @author Automattic
@@ -15,18 +16,6 @@
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit;
-
-/**
- * Required functions
- */
-if ( ! function_exists( 'woothemes_queue_update' ) ) {
-	require_once( 'woo-includes/woo-functions.php' );
-}
-
-/**
- * Plugin updates
- */
-woothemes_queue_update( plugin_basename( __FILE__ ), 'ec0f55d8fa7c517dc1844f5c873a77da', 435833 );
 
 require_once dirname( __FILE__ ) . '/includes/class-sensei-course-progress-dependency-checker.php';
 
