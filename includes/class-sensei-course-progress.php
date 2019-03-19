@@ -71,14 +71,15 @@ class Sensei_Course_Progress {
 
 		// Handle localisation.
 		$this->load_plugin_textdomain();
-
-		add_action( 'init', array( $this, 'load_localisation' ), 0 );
 	} // End __construct()
 
 	/**
 	 * Set up all hooks and filters if dependencies are met.
 	 */
 	public static function init() {
+		$instance = self::instance();
+		add_action( 'init', array( $instance, 'load_localisation' ), 0 );
+
 		if ( ! Sensei_Course_Progress_Dependency_Checker::are_plugin_dependencies_met() ) {
 			return;
 		}
@@ -92,8 +93,6 @@ class Sensei_Course_Progress {
 		function Sensei_Course_Progress() {
 			return Sensei_Course_Progress::instance();
 		}
-
-		$instance = self::instance();
 
 		// Load frontend CSS.
 		add_action( 'wp_enqueue_scripts', array( $instance, 'enqueue_styles' ), 10 );
