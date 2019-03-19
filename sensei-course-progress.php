@@ -15,7 +15,9 @@
  * @since 1.0.0
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 define( 'SENSEI_COURSE_PROGRESS_VERSION', '2.0.0-beta.1' );
 define( 'SENSEI_COURSE_PROGRESS_PLUGIN_FILE', __FILE__ );
@@ -23,20 +25,13 @@ define( 'SENSEI_COURSE_PROGRESS_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 
 require_once dirname( __FILE__ ) . '/includes/class-sensei-course-progress-dependency-checker.php';
 
-if ( ! Sensei_Course_Progress_Dependency_Checker::are_dependencies_met() ) {
+if ( ! Sensei_Course_Progress_Dependency_Checker::are_system_dependencies_met() ) {
 	return;
 }
 
-require_once( dirname( __FILE__ ) . '/includes/class-sensei-course-progress.php' );
+require_once dirname( __FILE__ ) . '/includes/class-sensei-course-progress.php';
 
-/**
- * Returns the main instance of Sensei_Course_Progress to prevent the need to use globals.
- *
- * @since  1.0.0
- * @return object Sensei_Course_Progress
- */
-function Sensei_Course_Progress() {
-	return Sensei_Course_Progress::instance();
-}
+// Load the plugin after all the other plugins have loaded.
+add_action( 'plugins_loaded', array( 'Sensei_Course_Progress', 'init' ), 5 );
 
-Sensei_Course_Progress();
+Sensei_Course_Progress::instance();

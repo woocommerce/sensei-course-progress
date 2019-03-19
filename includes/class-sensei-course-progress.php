@@ -69,17 +69,38 @@ class Sensei_Course_Progress {
 
 		register_activation_hook( SENSEI_COURSE_PROGRESS_PLUGIN_FILE, array( $this, 'install' ) );
 
-		// Load frontend CSS.
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ), 10 );
-
 		// Handle localisation.
-		$this->load_plugin_textdomain ();
+		$this->load_plugin_textdomain();
+
 		add_action( 'init', array( $this, 'load_localisation' ), 0 );
+	} // End __construct()
+
+	/**
+	 * Set up all hooks and filters if dependencies are met.
+	 */
+	public static function init() {
+		if ( ! Sensei_Course_Progress_Dependency_Checker::are_plugin_dependencies_met() ) {
+			return;
+		}
+
+		/**
+		 * Returns the main instance of Sensei_Course_Progress to prevent the need to use globals.
+		 *
+		 * @since  1.0.0
+		 * @return Sensei_Course_Progress
+		 */
+		function Sensei_Course_Progress() {
+			return Sensei_Course_Progress::instance();
+		}
+
+		$instance = Sensei_Course_Progress();
+
+		// Load frontend CSS.
+		add_action( 'wp_enqueue_scripts', array( $instance, 'enqueue_styles' ), 10 );
 
 		// Include Widget.
-		add_action( 'widgets_init', array( $this, 'include_widgets' ) );
-
-	} // End __construct()
+		add_action( 'widgets_init', array( $instance, 'include_widgets' ) );
+	}
 
 	/**
 	 * Include widgets

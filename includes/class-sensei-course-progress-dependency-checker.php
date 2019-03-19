@@ -13,21 +13,41 @@ class Sensei_Course_Progress_Dependency_Checker {
 	const MINIMUM_SENSEI_VERSION = '1.11.0';
 
 	/**
-	 * Checks if all dependencies are met.
+	 * Checks if all system dependencies are met.
 	 *
 	 * @return bool
 	 */
-	public static function are_dependencies_met() {
+	public static function are_system_dependencies_met() {
 		$are_met = true;
 		if ( ! self::check_php() ) {
 			add_action( 'admin_notices', array( __CLASS__, 'add_php_notice' ) );
 			$are_met = false;
 		}
+		if ( ! $are_met ) {
+			add_action( 'admin_init', array( __CLASS__, 'deactivate_self' ) );
+		}
+		return $are_met;
+	}
+
+	/**
+	 * Checks if all plugin dependencies are met.
+	 *
+	 * @return bool
+	 */
+	public static function are_plugin_dependencies_met() {
+		$are_met = true;
 		if ( ! self::check_sensei() ) {
 			add_action( 'admin_notices', array( __CLASS__, 'add_sensei_notice' ) );
 			$are_met = false;
 		}
 		return $are_met;
+	}
+
+	/**
+	 * Deactivate self.
+	 */
+	public static function deactivate_self() {
+		deactivate_plugins( SENSEI_COURSE_PROGRESS_PLUGIN_BASENAME );
 	}
 
 	/**
