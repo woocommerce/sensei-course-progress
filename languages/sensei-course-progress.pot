@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Sensei Course Progress package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Sensei Course Progress 2.0.0-beta.1\n"
+"Project-Id-Version: Sensei Course Progress 2.0.0-beta.2\n"
 "Report-Msgid-Bugs-To: "
 "https://github.com/woocommerce/sensei-course-progress/issues\n"
 "POT-Creation-Date: 2019-03-19 12:59:26+00:00\n"
