@@ -29,22 +29,6 @@ class Sensei_Course_Progress {
 	private $_token;
 
 	/**
-	 * The main plugin file.
-	 * @var     string
-	 * @access  private
-	 * @since   1.0.0
-	 */
-	private $file;
-
-	/**
-	 * The main plugin directory.
-	 * @var     string
-	 * @access  private
-	 * @since   1.0.0
-	 */
-	private $dir;
-
-	/**
 	 * The plugin assets directory.
 	 * @var     string
 	 * @access  private
@@ -74,36 +58,53 @@ class Sensei_Course_Progress {
 	 * @since   1.0.0
 	 * @return  void
 	 */
-	public function __construct ( $file, $version = '1.0.0' ) {
-		$this->_version = $version;
-		$this->_token = 'sensei_course_progress';
+	public function __construct() {
+		$this->_version = SENSEI_COURSE_PROGRESS_VERSION;
+		$this->_token   = 'sensei_course_progress';
 
-		$this->file = $file;
-		$this->dir = dirname( $this->file );
-		$this->assets_dir = trailingslashit( $this->dir ) . 'assets';
-		$this->assets_url = esc_url( trailingslashit( plugins_url( '/assets/', $this->file ) ) );
+		$this->assets_dir = trailingslashit( dirname( SENSEI_COURSE_PROGRESS_PLUGIN_FILE ) ) . 'assets';
+		$this->assets_url = esc_url( trailingslashit( plugins_url( '/assets/', SENSEI_COURSE_PROGRESS_PLUGIN_FILE ) ) );
 
 		$this->script_suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
-		register_activation_hook( $this->file, array( $this, 'install' ) );
+		$this->load_plugin_textdomain();
 
-		// Load frontend CSS
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ), 10 );
-
-		// Handle localisation
-		$this->load_plugin_textdomain ();
-		add_action( 'init', array( $this, 'load_localisation' ), 0 );
-
-		// Include Widget
-		add_action( 'widgets_init', array( $this, 'include_widgets' ) );
-
+		register_activation_hook( SENSEI_COURSE_PROGRESS_PLUGIN_FILE, array( $this, 'install' ) );
 	} // End __construct()
+
+	/**
+	 * Set up all hooks and filters if dependencies are met.
+	 */
+	public static function init() {
+		$instance = self::instance();
+		add_action( 'init', array( $instance, 'load_localisation' ), 0 );
+
+		if ( ! Sensei_Course_Progress_Dependency_Checker::are_plugin_dependencies_met() ) {
+			return;
+		}
+
+		/**
+		 * Returns the main instance of Sensei_Course_Progress to prevent the need to use globals.
+		 *
+		 * @since  1.0.0
+		 * @return Sensei_Course_Progress
+		 */
+		function Sensei_Course_Progress() {
+			return Sensei_Course_Progress::instance();
+		}
+
+		// Load frontend CSS.
+		add_action( 'wp_enqueue_scripts', array( $instance, 'enqueue_styles' ), 10 );
+
+		// Include Widget.
+		add_action( 'widgets_init', array( $instance, 'include_widgets' ) );
+	}
 
 	/**
 	 * Include widgets
 	 */
 	public function include_widgets() {
-		include_once( dirname( __FILE__ ) . '/class-sensei-course-progress-widget.php' );
+		include_once dirname( __FILE__ ) . '/class-sensei-course-progress-widget.php';
 		register_widget( 'Sensei_Course_Progress_Widget' );
 	}
 
@@ -114,8 +115,6 @@ class Sensei_Course_Progress {
 	 * @return void
 	 */
 	public function enqueue_styles () {
-		global $woothemes_sensei;
-
 		wp_register_style( $this->_token . '-frontend', esc_url( $this->assets_url ) . 'css/frontend.min.css', array(), $this->_version );
 		wp_enqueue_style( $this->_token . '-frontend' );
 	} // End enqueue_styles()
@@ -127,7 +126,7 @@ class Sensei_Course_Progress {
 	 * @return void
 	 */
 	public function load_localisation () {
-		load_plugin_textdomain( 'sensei-course-progress' , false , dirname( plugin_basename( $this->file ) ) . '/lang/' );
+		load_plugin_textdomain( 'sensei-course-progress' , false , dirname( SENSEI_COURSE_PROGRESS_PLUGIN_BASENAME ) . '/lang/' );
 	} // End load_localisation()
 
 	/**
@@ -137,12 +136,12 @@ class Sensei_Course_Progress {
 	 * @return void
 	 */
 	public function load_plugin_textdomain () {
-	    $domain = 'sensei-course-progress';
+		$domain = 'sensei-course-progress';
 
-	    $locale = apply_filters( 'plugin_locale' , get_locale() , $domain );
+		$locale = apply_filters( 'plugin_locale' , get_locale() , $domain );
 
-	    load_textdomain( $domain , WP_LANG_DIR . '/' . $domain . '/' . $domain . '-' . $locale . '.mo' );
-	    load_plugin_textdomain( $domain , FALSE , dirname( plugin_basename( $this->file ) ) . '/lang/' );
+		load_textdomain( $domain , WP_LANG_DIR . '/' . $domain . '/' . $domain . '-' . $locale . '.mo' );
+		load_plugin_textdomain( $domain , FALSE , dirname( SENSEI_COURSE_PROGRESS_PLUGIN_BASENAME ) . '/lang/' );
 	} // End load_plugin_textdomain
 
 	/**
@@ -153,11 +152,12 @@ class Sensei_Course_Progress {
 	 * @since 1.0.0
 	 * @static
 	 * @see Sensei_Course_Progress()
-	 * @return Main Sensei_Course_Progress instance
+	 * @return Sensei_Course_Progress instance
 	 */
-	public static function instance ( $file, $version = '1.0.0' ) {
-		if ( is_null( self::$_instance ) )
-			self::$_instance = new self( $file, $version );
+	public static function instance() {
+		if ( is_null( self::$_instance ) ) {
+			self::$_instance = new self();
+		}
 		return self::$_instance;
 	} // End instance()
 

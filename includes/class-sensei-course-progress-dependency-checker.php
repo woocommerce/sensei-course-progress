@@ -13,44 +13,41 @@ class Sensei_Course_Progress_Dependency_Checker {
 	const MINIMUM_SENSEI_VERSION = '1.11.0';
 
 	/**
-	 * The list of active plugins.
-	 *
-	 * @var array
-	 */
-	private static $active_plugins;
-
-	/**
-	 * Get active plugins.
-	 *
-	 * @return string[]
-	 */
-	private static function get_active_plugins() {
-		if ( ! isset( self::$active_plugins ) ) {
-			self::$active_plugins = (array) get_option( 'active_plugins', array() );
-
-			if ( is_multisite() ) {
-				self::$active_plugins = array_merge( self::$active_plugins, get_site_option( 'active_sitewide_plugins', array() ) );
-			}
-		}
-		return self::$active_plugins;
-	}
-
-	/**
-	 * Checks if all dependencies are met.
+	 * Checks if all system dependencies are met.
 	 *
 	 * @return bool
 	 */
-	public static function are_dependencies_met() {
+	public static function are_system_dependencies_met() {
 		$are_met = true;
 		if ( ! self::check_php() ) {
 			add_action( 'admin_notices', array( __CLASS__, 'add_php_notice' ) );
 			$are_met = false;
 		}
+		if ( ! $are_met ) {
+			add_action( 'admin_init', array( __CLASS__, 'deactivate_self' ) );
+		}
+		return $are_met;
+	}
+
+	/**
+	 * Checks if all plugin dependencies are met.
+	 *
+	 * @return bool
+	 */
+	public static function are_plugin_dependencies_met() {
+		$are_met = true;
 		if ( ! self::check_sensei() ) {
 			add_action( 'admin_notices', array( __CLASS__, 'add_sensei_notice' ) );
 			$are_met = false;
 		}
 		return $are_met;
+	}
+
+	/**
+	 * Deactivate self.
+	 */
+	public static function deactivate_self() {
+		deactivate_plugins( SENSEI_COURSE_PROGRESS_PLUGIN_BASENAME );
 	}
 
 	/**
@@ -68,23 +65,7 @@ class Sensei_Course_Progress_Dependency_Checker {
 	 * @return bool
 	 */
 	private static function check_sensei() {
-		$active_plugins = self::get_active_plugins();
-
-		$search_sensei = array(
-			'sensei/sensei.php',                     // Sensei 2.x from WordPress.org.
-			'sensei/woothemes-sensei.php',           // Sensei 1.x or Sensei 2.x Compatibility Plugin.
-			'woothemes-sensei/woothemes-sensei.php', // Sensei 1.x or Sensei 2.x Compatibility Plugin.
-		);
-
-		$found_sensei = false;
-		foreach ( $search_sensei as $basename ) {
-			if ( in_array( $basename, $active_plugins, true ) || array_key_exists( $basename, $active_plugins ) ) {
-				$found_sensei = true;
-				break;
-			}
-		}
-
-		if ( ! $found_sensei && ! class_exists( 'Sensei_Main' ) ) {
+		if ( ! class_exists( 'Sensei_Main' ) ) {
 			return false;
 		}
 
@@ -107,7 +88,7 @@ class Sensei_Course_Progress_Dependency_Checker {
 		}
 
 		// translators: %1$s is version of PHP that this plugin requires; %2$s is the version of PHP WordPress is running on.
-		$message = sprintf( __( '<strong>Sensei Course Progress</strong> requires PHP version %1$s but you are running %2$s.', 'sensei-course-progress' ), self::MINIMUM_PHP_VERSION, phpversion() );
+		$message = sprintf( __( '<strong>Sensei Course Progress</strong> requires a minimum PHP version of %1$s, but you are running %2$s.', 'sensei-course-progress' ), self::MINIMUM_PHP_VERSION, phpversion() );
 		echo '<div class="error"><p>';
 		echo wp_kses( $message, array( 'strong' => array() ) );
 		$php_update_url = 'https://wordpress.org/support/update-php/';
