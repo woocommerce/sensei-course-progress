@@ -93,7 +93,7 @@ class Sensei_Course_Progress {
 			return Sensei_Course_Progress::instance();
 		}
 
-		$instance = Sensei_Course_Progress();
+		$instance = Sensei_Course_Progress::instance();
 
 		// Load frontend CSS.
 		add_action( 'wp_enqueue_scripts', array( $instance, 'enqueue_styles' ), 10 );
