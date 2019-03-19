@@ -67,10 +67,9 @@ class Sensei_Course_Progress {
 
 		$this->script_suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
-		register_activation_hook( SENSEI_COURSE_PROGRESS_PLUGIN_FILE, array( $this, 'install' ) );
-
-		// Handle localisation.
 		$this->load_plugin_textdomain();
+
+		register_activation_hook( SENSEI_COURSE_PROGRESS_PLUGIN_FILE, array( $this, 'install' ) );
 	} // End __construct()
 
 	/**
