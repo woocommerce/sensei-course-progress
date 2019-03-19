@@ -17,6 +17,10 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
+define( 'SENSEI_COURSE_PROGRESS_VERSION', '2.0.0-beta.1' );
+define( 'SENSEI_COURSE_PROGRESS_PLUGIN_FILE', __FILE__ );
+define( 'SENSEI_COURSE_PROGRESS_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
+
 require_once dirname( __FILE__ ) . '/includes/class-sensei-course-progress-dependency-checker.php';
 
 if ( ! Sensei_Course_Progress_Dependency_Checker::are_dependencies_met() ) {
@@ -32,7 +36,7 @@ require_once( dirname( __FILE__ ) . '/includes/class-sensei-course-progress.php'
  * @return object Sensei_Course_Progress
  */
 function Sensei_Course_Progress() {
-	return Sensei_Course_Progress::instance( __FILE__, '2.0.0-beta.1' );
+	return Sensei_Course_Progress::instance();
 }
 
 Sensei_Course_Progress();
