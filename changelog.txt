@@ -1,10 +1,9 @@
 *** Sensei Course Progress Changelog ***
 
-2019.03.15 - version 2.0.0
-* Update: Dependency check for Sensei and PHP versions
-* Tweak: Bump minimum required PHP version to 5.6
+2019.03.19 - version 2.0.0
+* New: Add dependency check for minimum Sensei (1.11.0) and PHP (5.6) versions
 * Tweak: Use Woo header for plugin updates
-* Fix: Widget CSS for themes that change the default widget class
+* Fix: Broken CSS for themes that change the default widget class
 
 2018.10.31 - version 1.0.8
 * Fix: Widget does not work if lessons are not in a module
