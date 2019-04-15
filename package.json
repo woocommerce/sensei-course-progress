@@ -4,8 +4,9 @@
 	"description": "Sensei widget that displays all the lessons in the current course",
 	"main": "sensei-course-progress.php",
 	"scripts": {
-		"build": "gulp build",
-		"dev": "gulp build-dev"
+		"dev": "NODE_ENV=dev gulp package",
+		"prod": "NODE_ENV=prod gulp package",
+		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"repository": {
 		"type": "git",
@@ -21,14 +22,10 @@
 	},
 	"homepage": "https://github.com/woocommerce/sensei-course-progress#readme",
 	"devDependencies": {
-		"del": "^3.0.0",
-		"gulp": "^3.9.1",
-		"gulp-clean-css": "^3.9.2",
-		"gulp-rename": "^1.2.2",
-		"gulp-sass": "^3.1.0",
-		"gulp-sourcemaps": "^2.6.4",
-		"gulp-zip": "^4.2.0",
-		"node-wp-i18n": "^1.0.5",
-		"run-sequence": "^2.2.1"
+		"del": "^4.1.0",
+		"gulp": "^4.0.0",
+		"gulp-sass": "^4.0.2",
+		"gulp-wp-pot": "^2.3.5",
+		"gulp-zip": "^4.2.0"
 	}
 }
