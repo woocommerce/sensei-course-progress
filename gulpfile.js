@@ -13,7 +13,6 @@ function clean() {
 function css() {
 	return src( 'assets/css/*.scss')
 		.pipe( sass( { outputStyle: 'expanded' } ) )
-		.pipe( dest( 'assets/css' ) )
 		.pipe( dest( buildDir + '/assets/css' ) )
 }
 
