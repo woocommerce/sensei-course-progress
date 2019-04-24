@@ -1,14 +1,14 @@
 <?php
 /*
  * Plugin Name: Sensei Course Progress
- * Version: 2.0.0-beta.2
+ * Version: 2.0.0
  * Plugin URI: https://woocommerce.com/products/sensei-course-progress/
  * Description: Sensei extension that displays the learner's progress in the current course/module in a widget on lesson pages.
  * Author: Automattic
  * Author URI: https://automattic.com
- * Requires at least: 3.8
+ * Requires at least: 4.1
  * Requires PHP: 5.6
- * Tested up to: 4.9
+ * Tested up to: 5.1
  * Woo: 435833:ec0f55d8fa7c517dc1844f5c873a77da
  *
  * @package WordPress
@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'SENSEI_COURSE_PROGRESS_VERSION', '2.0.0-beta.2' );
+define( 'SENSEI_COURSE_PROGRESS_VERSION', '2.0.0' );
 define( 'SENSEI_COURSE_PROGRESS_PLUGIN_FILE', __FILE__ );
 define( 'SENSEI_COURSE_PROGRESS_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 
