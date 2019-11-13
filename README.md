@@ -1,10 +1,10 @@
-# Sensei Course Progress
+# Sensei LMS Course Progress
 
-Sensei Course Progress provides a sidebar widget that displays all the lessons in the current course or module and lets your learners see, at a glance, which ones they have completed and which they have yet to take.
+Sensei LMS Course Progress provides a sidebar widget that displays all the lessons in the current course or module and lets your learners see, at a glance, which ones they have completed and which they have yet to take.
 
 ## Getting Started
 
-If you'd like to try Sensei Course Progress on your site, you can download it for free from the [product page](https://woocommerce.com/products/sensei-course-progress/).
+If you'd like to try Sensei LMS Course Progress on your site, you can download it for free from the [product page](https://woocommerce.com/products/sensei-course-progress/).
 
 If you'd like to do some development and run the plugin locally, you can do that too:
 
