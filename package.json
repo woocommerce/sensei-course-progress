@@ -22,10 +22,10 @@
 	},
 	"homepage": "https://github.com/woocommerce/sensei-course-progress#readme",
 	"devDependencies": {
-		"del": "^4.1.0",
-		"gulp": "^4.0.0",
-		"gulp-sass": "^4.0.2",
-		"gulp-wp-pot": "^2.3.5",
-		"gulp-zip": "^4.2.0"
+		"del": "4.1.0",
+		"gulp": "4.0.0",
+		"gulp-sass": "4.0.2",
+		"gulp-wp-pot": "2.3.5",
+		"gulp-zip": "4.2.0"
 	}
 }
