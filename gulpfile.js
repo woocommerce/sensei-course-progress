@@ -41,7 +41,7 @@ function pot() {
 	return src( [ 'sensei-course-progress.php', 'includes/**/*.php' ] )
 		.pipe( wpPot( {
 			domain: 'sensei-course-progress',
-			package: 'Sensei Course Progress',
+			package: 'Sensei LMS Course Progress',
 		} ) )
 		.pipe( dest( 'languages/sensei-course-progress.pot' ) );
 }
