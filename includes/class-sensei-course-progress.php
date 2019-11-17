@@ -126,7 +126,7 @@ class Sensei_Course_Progress {
 	 * @return void
 	 */
 	public function load_localisation () {
-		load_plugin_textdomain( 'sensei-course-progress' , false , dirname( SENSEI_COURSE_PROGRESS_PLUGIN_BASENAME ) . '/lang/' );
+		load_plugin_textdomain( 'sensei-course-progress' , false , dirname( SENSEI_COURSE_PROGRESS_PLUGIN_BASENAME ) . '/languages/' );
 	} // End load_localisation()
 
 	/**
@@ -141,7 +141,7 @@ class Sensei_Course_Progress {
 		$locale = apply_filters( 'plugin_locale' , get_locale() , $domain );
 
 		load_textdomain( $domain , WP_LANG_DIR . '/' . $domain . '/' . $domain . '-' . $locale . '.mo' );
-		load_plugin_textdomain( $domain , FALSE , dirname( SENSEI_COURSE_PROGRESS_PLUGIN_BASENAME ) . '/lang/' );
+		load_plugin_textdomain( $domain , FALSE , dirname( SENSEI_COURSE_PROGRESS_PLUGIN_BASENAME ) . '/languages/' );
 	} // End load_plugin_textdomain
 
 	/**

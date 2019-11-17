@@ -248,7 +248,7 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 						if ( $new_module ) {
 							$module_title = $this->get_module_title_content( $new_module );
 						} else {
-							$module_title = esc_html( __( 'Other Lessons', 'woothemes-sensei' ) );
+							$module_title = esc_html( __( 'Other Lessons', 'sensei-course-progress' ) );
 						}
 
 						?>
@@ -316,10 +316,10 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 		?>
 				<p>
 					<input type="checkbox" class="checkbox" id="<?php echo esc_attr( $this->get_field_id('allmodules') ); ?>" name="<?php echo esc_attr( $this->get_field_name('allmodules') ); ?>"<?php checked( $instance['allmodules'], 'on' ); ?> />
-					<label for="<?php echo esc_attr( $this->get_field_id('allmodules') ); ?>"><?php esc_html_e( 'Display all Modules', 'woothemes-sensei' ); ?></label><br />
+					<label for="<?php echo esc_attr( $this->get_field_id('allmodules') ); ?>"><?php esc_html_e( 'Display all Modules', 'sensei-course-progress' ); ?></label><br />
 				</p>
 		<?php } else { ?>
-				<p><?php esc_html_e( 'There are no options for this widget.', 'woothemes-sensei' ); ?></p>
+				<p><?php esc_html_e( 'There are no options for this widget.', 'sensei-course-progress' ); ?></p>
 				<?php }
 	} // End form()
 
