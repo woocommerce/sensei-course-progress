@@ -9,7 +9,6 @@
  * Requires at least: 4.9
  * Requires PHP: 5.6
  * Tested up to: 5.3
- * Woo: 435833:ec0f55d8fa7c517dc1844f5c873a77da
  *
  * @package WordPress
  * @author Automattic
