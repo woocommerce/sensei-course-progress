@@ -1,5 +1,9 @@
 *** Sensei LMS Course Progress Changelog ***
 
+2019.12.05 - version 2.0.2
+* New: Remove Woo header so that plugin updates are served from WordPress.org - #87
+* Tweak: Add readme.txt to build instead of README.md - #86
+
 2019.11.21 - version 2.0.1
 * New: Rename plugin to Sensei LMS Course Progress - #79
 * New: Add Hungarian translation (@amroland) - #83
