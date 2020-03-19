@@ -61,9 +61,6 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 		// get the course for the current lesson/quiz
 		$lesson_course_id = absint( get_post_meta( $current_lesson_id, '_lesson_course', true ) );
 
-		// Check if the user is taking the course
-		$is_user_taking_course = WooThemes_Sensei_Utils::user_started_course( $lesson_course_id, $current_user->ID );
-
 		//Check for preview lesson
 		$is_preview = false;
 		if ( method_exists( 'WooThemes_Sensei_Utils', 'is_preview_lesson' ) ) {
