@@ -1,5 +1,8 @@
 *** Sensei LMS Course Progress Changelog ***
 
+2020.04.08 - version 2.0.3
+* Tweak: Remove call to `user_started_course` - #98
+
 2019.12.05 - version 2.0.2
 * New: Remove Woo header so that plugin updates are served from WordPress.org - #87
 * Tweak: Add readme.txt to build instead of README.md - #86

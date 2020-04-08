@@ -1,4 +1,4 @@
-# Copyright (C) 2019 Sensei LMS Course Progress
+# Copyright (C) 2020 Sensei LMS Course Progress
 # This file is distributed under the same license as the Sensei LMS Course Progress package.
 msgid ""
 msgstr ""
@@ -40,23 +40,23 @@ msgstr ""
 msgid "Sensei LMS - Course Progress"
 msgstr ""
 
-#: includes/class-sensei-course-progress-widget.php:210
+#: includes/class-sensei-course-progress-widget.php:207
 msgid "Previous"
 msgstr ""
 
-#: includes/class-sensei-course-progress-widget.php:211
+#: includes/class-sensei-course-progress-widget.php:208
 msgid "Next"
 msgstr ""
 
-#: includes/class-sensei-course-progress-widget.php:251
+#: includes/class-sensei-course-progress-widget.php:248
 msgid "Other Lessons"
 msgstr ""
 
-#: includes/class-sensei-course-progress-widget.php:319
+#: includes/class-sensei-course-progress-widget.php:316
 msgid "Display all Modules"
 msgstr ""
 
-#: includes/class-sensei-course-progress-widget.php:322
+#: includes/class-sensei-course-progress-widget.php:319
 msgid "There are no options for this widget."
 msgstr ""
 

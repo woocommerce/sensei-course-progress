@@ -1,6 +1,6 @@
 {
 	"name": "sensei-course-progress",
-	"version": "2.0.2",
+	"version": "2.0.3",
 	"description": "Sensei widget that displays all the lessons in the current course",
 	"main": "sensei-course-progress.php",
 	"scripts": {
