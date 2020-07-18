@@ -26,6 +26,6 @@
 		"gulp": "4.0.2",
 		"gulp-sass": "4.0.2",
 		"gulp-wp-pot": "2.4.3",
-		"gulp-zip": "5.0.1"
+		"gulp-zip": "5.0.2"
 	}
 }
