@@ -1,14 +1,13 @@
 const defaultConfig = require( '@wordpress/scripts/config/webpack.config' );
-const path          = require( 'path' );
+const path = require( 'path' );
 
 const files = {
-	'css/frontend': 'css/frontend.scss'
+	'css/frontend': 'css/frontend.scss',
 };
 
 const baseDist = 'assets/dist/';
-
-Object.keys(files).map( function( key, index) {
-	files[key] = path.resolve( './assets', files[key] );
+Object.keys( files ).forEach( function ( key ) {
+	files[ key ] = path.resolve( './assets', files[ key ] );
 } );
 
 module.exports = {
@@ -16,5 +15,5 @@ module.exports = {
 	entry: files,
 	output: {
 		path: path.resolve( '.', baseDist ),
-	}
+	},
 };
