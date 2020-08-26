@@ -45,14 +45,6 @@ class Sensei_Course_Progress {
 	private $assets_url;
 
 	/**
-	 * Suffix for Javascripts.
-	 * @var     string
-	 * @access  private
-	 * @since   1.0.0
-	 */
-	private $script_suffix;
-
-	/**
 	 * Constructor function.
 	 * @access  public
 	 * @since   1.0.0
@@ -63,9 +55,7 @@ class Sensei_Course_Progress {
 		$this->_token   = 'sensei_course_progress';
 
 		$this->assets_dir = trailingslashit( dirname( SENSEI_COURSE_PROGRESS_PLUGIN_FILE ) ) . 'assets';
-		$this->assets_url = esc_url( trailingslashit( plugins_url( '/assets/', SENSEI_COURSE_PROGRESS_PLUGIN_FILE ) ) );
-
-		$this->script_suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+		$this->assets_url = esc_url( trailingslashit( plugins_url( '/assets/dist/', SENSEI_COURSE_PROGRESS_PLUGIN_FILE ) ) );
 
 		$this->load_plugin_textdomain();
 
