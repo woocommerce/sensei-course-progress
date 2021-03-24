@@ -6,9 +6,9 @@
  * Description: Sensei LMS extension that displays the student's progress in the current course/module in a widget on lesson pages.
  * Author: Automattic
  * Author URI: https://automattic.com
- * Requires at least: 4.9
- * Requires PHP: 5.6
- * Tested up to: 5.4
+ * Requires at least: 5.5
+ * Requires PHP: 7.0
+ * Tested up to: 5.7
  *
  * @package WordPress
  * @author Automattic
