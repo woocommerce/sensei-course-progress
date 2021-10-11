@@ -210,6 +210,15 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 
 		<?php } ?>
 
+	<details class="course-progress-details" open>
+		<summary class="course-progress-summary">
+			<div class="course-progress-collapse">
+				<?php echo esc_html__( 'Collapse', 'sensei-course-progress' ); ?>
+			</div>
+			<div class="course-progress-expand">
+				<?php echo esc_html__( 'Expand', 'sensei-course-progress' ); ?>
+			</div>
+		</summary>
 		<ul class="course-progress-lessons">
 
 			<?php
@@ -272,6 +281,7 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 			<?php } ?>
 
 		</ul>
+	</details>
 
 		<?php echo wp_kses_post( $after_widget );
 	}
