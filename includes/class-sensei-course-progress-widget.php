@@ -48,12 +48,15 @@ class Sensei_Course_Progress_Widget extends WP_Widget {
 		}
 
 		// If not viewing a lesson/quiz, don't display the widget
-		if( ! ( is_singular( 'lesson' ) || is_singular( 'quiz' ) || is_tax( 'module' ) ) ) return;
+		if( ! ( is_singular( 'lesson' ) || is_singular( 'quiz' ) || is_singular( 'course' ) || is_tax( 'module' ) ) ) return;
 
 		extract( $args );
 
 		if ( is_singular('quiz') ) {
 			$current_lesson_id = absint( get_post_meta( $post->ID, '_quiz_lesson', true ) );
+		} elseif ( is_singular('course')) {
+			$course_lesson_ids = Sensei()->course->course_lessons( $post->ID, 'any', 'ids' );
+			$current_lesson_id = isset( $course_lesson_ids[0] ) ? $course_lesson_ids[0] : $post->ID;
 		} else {
 			$current_lesson_id = $post->ID;
 		}
