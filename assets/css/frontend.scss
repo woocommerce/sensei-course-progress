@@ -14,9 +14,9 @@
 			}
 		}
 	}
+
 	.course-progress-lessons {
 		list-style: none;
-		clear: both;
 		#sidebar & {
 			margin: 0;
 		}
@@ -56,11 +56,6 @@
 				background: rgba(255,255,255,1);
 				text-decoration: none;
 			}
-			&:first-child {
-				a, span {
-					border-top: 1px solid rgba(0,0,0,0.1);
-				}
-			}
 			&.current span {
 				background: rgba(255,255,255,1);
 				color: rgba(0,0,0,0.5);
@@ -86,6 +81,12 @@
 	ul.course-progress-navigation {
 		background: #eee;
 		border-top: 1px solid #ddd;
+		display: flex;
+		flex-direction: row;
+		justify-content: flex-start;
+		align-items: center;
+		margin: 0;
+		padding: 0;
 		li {
 			width: 50%;
 			text-align: center;
@@ -114,7 +115,7 @@
 				}
 			}
 			&.prev {
-				float: left;
+				margin-right: auto;
 				a {
 					border-right: 1px solid #ddd;
 					&:before {
@@ -123,7 +124,7 @@
 				}
 			}
 			&.next {
-				float: right;
+				margin-left: auto;
 				a {
 					&:after {
 						content: "\f054";
@@ -132,4 +133,43 @@
 			}
 		}
 	}
+}
+
+details.course-progress-details {
+	summary {
+		outline: none;
+		&::marker, &::-webkit-details-marker {
+			content: "";
+			display: none;
+		}
+	}
+}
+
+details.course-progress-details {
+	.course-progress-summary {
+		height: 32px;
+		width: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		user-select: none;
+		text-decoration: underline;
+		&:hover {
+			cursor: pointer;
+			background: rgba(0,0,0,0.01);
+		}
+	}
+	.course-progress-collapse {
+		display: none;
+	}
+}
+
+details.course-progress-details[open] {
+	.course-progress-collapse {
+		display: block;
+	}
+	.course-progress-expand {
+		display: none;
+	}
+
 }
