@@ -1,17 +1,38 @@
-# Copyright (C) 2020 Sensei LMS Course Progress
-# This file is distributed under the same license as the Sensei LMS Course Progress package.
+# Copyright (C) 2021 Automattic
+# This file is distributed under the same license as the Sensei LMS Course Progress plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Sensei LMS Course Progress\n"
+"Project-Id-Version: Sensei LMS Course Progress 2.0.4\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/sensei-course-progress\n"
+"Last-Translator: \n"
+"Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Basepath: ..\n"
-"X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
-"X-Poedit-SearchPath-0: .\n"
-"X-Poedit-SearchPathExcluded-0: *.js\n"
-"X-Poedit-SourceCharset: UTF-8\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"POT-Creation-Date: 2021-10-19T09:07:39+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.5.0\n"
+"X-Domain: sensei-course-progress\n"
+
+#. Plugin Name of the plugin
+msgid "Sensei LMS Course Progress"
+msgstr ""
+
+#. Plugin URI of the plugin
+msgid "https://woocommerce.com/products/sensei-course-progress/"
+msgstr ""
+
+#. Description of the plugin
+msgid "Sensei LMS extension that displays the student's progress in the current course/module in a widget on lesson pages."
+msgstr ""
+
+#. Author of the plugin
+msgid "Automattic"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://automattic.com"
+msgstr ""
 
 #. translators: %1$s is version of PHP that this plugin requires; %2$s is the version of PHP WordPress is running on.
 #: includes/class-sensei-course-progress-dependency-checker.php:91
@@ -32,34 +53,50 @@ msgstr ""
 msgid "<strong>Sensei LMS Course Progress</strong> requires that the plugin <strong>Sensei</strong> (minimum version: <strong>%1$s</strong>) is installed and activated."
 msgstr ""
 
+#: includes/class-sensei-course-progress-widget-original.php:28
 #: includes/class-sensei-course-progress-widget.php:28
 msgid "Displays the current learners progress within the current course/module (only displays on single lesson page)."
 msgstr ""
 
+#: includes/class-sensei-course-progress-widget-original.php:30
 #: includes/class-sensei-course-progress-widget.php:30
 msgid "Sensei LMS - Course Progress"
 msgstr ""
 
+#: includes/class-sensei-course-progress-widget-original.php:207
 #: includes/class-sensei-course-progress-widget.php:207
 msgid "Previous"
 msgstr ""
 
+#: includes/class-sensei-course-progress-widget-original.php:208
 #: includes/class-sensei-course-progress-widget.php:208
 msgid "Next"
 msgstr ""
 
-#: includes/class-sensei-course-progress-widget.php:248
+#: includes/class-sensei-course-progress-widget-original.php:248
+#: includes/class-sensei-course-progress-widget.php:257
 msgid "Other Lessons"
 msgstr ""
 
-#: includes/class-sensei-course-progress-widget.php:316
+#: includes/class-sensei-course-progress-widget-original.php:316
+#: includes/class-sensei-course-progress-widget.php:326
 msgid "Display all Modules"
 msgstr ""
 
-#: includes/class-sensei-course-progress-widget.php:319
+#: includes/class-sensei-course-progress-widget-original.php:319
+#: includes/class-sensei-course-progress-widget.php:329
 msgid "There are no options for this widget."
 msgstr ""
 
-#: includes/class-sensei-course-progress.php:170, includes/class-sensei-course-progress.php:179
+#: includes/class-sensei-course-progress-widget.php:216
+msgid "Collapse"
+msgstr ""
+
+#: includes/class-sensei-course-progress-widget.php:219
+msgid "Expand"
+msgstr ""
+
+#: includes/class-sensei-course-progress.php:160
+#: includes/class-sensei-course-progress.php:169
 msgid "Cheatin&#8217; huh?"
 msgstr ""

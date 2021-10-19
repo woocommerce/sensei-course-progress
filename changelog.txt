@@ -1,5 +1,8 @@
 *** Sensei LMS Course Progress Changelog ***
 
+2021.10.19 - version 2.0.4
+* New: Add ability to minimize the course progress widget by the user - #115
+
 2020.04.08 - version 2.0.3
 * Tweak: Remove call to `user_started_course` - #98
 
