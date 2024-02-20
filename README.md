@@ -1,5 +1,7 @@
 # Sensei LMS Course Progress
 
+> **This extension has been [retired](https://senseilms.com/retiring-course-progress-and-media-attachments/) and is no longer being actively maintained. This functionality is now available by default in [Learning Mode](https://senseilms.com/documentation/learning-mode-overview/#overview).**
+
 Sensei LMS Course Progress provides a sidebar widget that displays all the lessons in the current course or module and lets your learners see, at a glance, which ones they have completed and which they have yet to take.
 
 ## Getting Started
